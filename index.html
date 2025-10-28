@@ -19,62 +19,70 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #f3f4f6;
       min-height: 100vh;
+      background: linear-gradient(180deg, #e0f2fe 0%, #f9fafb 100%);
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
       padding: 20px;
     }
   </style>
 </head>
 
-<body class="text-center">
-  <h1 class="text-2xl font-bold text-blue-600 mb-4">💊 Môj doplnkový cyklus</h1>
+<body>
+  <div class="bg-white shadow-lg rounded-3xl p-6 w-full max-w-md text-center">
+    <img src="./cyklus.png" alt="Ikona cyklu" class="mx-auto w-20 h-20 mb-3 rounded-full shadow">
+    <h1 class="text-2xl font-extrabold text-blue-700 mb-2 flex justify-center items-center gap-2">
+      💊 Môj doplnkový cyklus
+    </h1>
+    <p class="mb-4 text-sm font-semibold text-purple-600">🧠 Vytvoril Ivan Kebra Nagast</p>
 
-  <div id="formular" class="w-full max-w-md bg-white p-4 rounded-lg shadow">
-    <label class="block mb-2 text-left text-gray-700 font-semibold">Názov doplnku</label>
-    <input id="nazov" type="text" placeholder="Napr. Kreatín" class="border w-full p-2 rounded mb-3" />
+    <div class="mb-4">
+      <input id="nazov" type="text" placeholder="Názov doplnku..." class="border w-full p-2 rounded mb-2" />
+      <button id="pridat" class="bg-blue-500 text-white px-4 py-2 rounded min-w-[100px] whitespace-nowrap overflow-hidden">
+        Pridať
+      </button>
+    </div>
 
-    <label class="block mb-2 text-left text-gray-700 font-semibold">Dávka</label>
-    <input id="davka" type="text" placeholder="Napr. 5g" class="border w-full p-2 rounded mb-3" />
+    <button id="reset" class="bg-red-500 text-white w-full py-2 rounded mb-2">🔄 Resetovať dáta</button>
+    <button id="notif" class="bg-green-500 text-white w-full py-2 rounded mb-4">🔔 Povoliť notifikácie</button>
 
-    <button id="pridat" class="bg-blue-500 text-white px-4 py-2 rounded min-w-[100px] whitespace-nowrap overflow-hidden">
-      Pridať
-    </button>
+    <h2 class="text-gray-700 font-semibold mb-1">Aktuálny deň:</h2>
+    <div class="relative flex justify-center items-center w-32 h-32 mx-auto border-4 border-gray-300 rounded-full">
+      <span id="progres" class="text-xl font-bold text-gray-600">0%</span>
+    </div>
+
+    <ul id="zoznam" class="mt-6 text-left space-y-2"></ul>
   </div>
 
-  <ul id="zoznam" class="mt-6 w-full max-w-md text-left space-y-2"></ul>
-
   <script>
-    // localStorage logika
+    // Lokálne uložené doplnky
     const nazovInput = document.getElementById("nazov");
-    const davkaInput = document.getElementById("davka");
     const zoznam = document.getElementById("zoznam");
+    const progres = document.getElementById("progres");
 
     function nacitaj() {
-      const ulozene = JSON.parse(localStorage.getItem("doplnky") || "[]");
+      const doplnky = JSON.parse(localStorage.getItem("doplnky") || "[]");
       zoznam.innerHTML = "";
-      ulozene.forEach((polozka, i) => {
+      doplnky.forEach((polozka, i) => {
         const li = document.createElement("li");
         li.className = "bg-gray-100 p-2 rounded flex justify-between items-center";
         li.innerHTML = `
-          <span>${polozka.nazov} — <strong>${polozka.davka}</strong></span>
+          <span>${polozka}</span>
           <button onclick="zmaz(${i})" class="text-red-500 font-bold">✕</button>
         `;
         zoznam.appendChild(li);
       });
+      progres.textContent = doplnky.length > 0 ? `${Math.min(doplnky.length * 10, 100)}%` : "0%";
     }
 
     function pridat() {
       const nazov = nazovInput.value.trim();
-      const davka = davkaInput.value.trim();
-      if (!nazov || !davka) return;
+      if (!nazov) return;
       const doplnky = JSON.parse(localStorage.getItem("doplnky") || "[]");
-      doplnky.push({ nazov, davka });
+      doplnky.push(nazov);
       localStorage.setItem("doplnky", JSON.stringify(doplnky));
       nazovInput.value = "";
-      davkaInput.value = "";
       nacitaj();
     }
 
@@ -86,9 +94,22 @@
     }
 
     document.getElementById("pridat").addEventListener("click", pridat);
+    document.getElementById("reset").addEventListener("click", () => {
+      localStorage.removeItem("doplnky");
+      nacitaj();
+    });
+
+    document.getElementById("notif").addEventListener("click", async () => {
+      if ("Notification" in window) {
+        const perm = await Notification.requestPermission();
+        if (perm === "granted") {
+          new Notification("🔔 Notifikácie povolené", { body: "Budeš dostávať upozornenia o doplnkoch." });
+        }
+      }
+    });
+
     window.addEventListener("load", nacitaj);
 
-    // Registrácia service workera
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("./sw.js");
     }
