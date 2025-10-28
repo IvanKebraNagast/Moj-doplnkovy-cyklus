@@ -1,84 +1,189 @@
 <!DOCTYPE html>
 <html lang="sk">
 <head>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Môj doplnkový cyklus 💊</title>
 
-  <!-- 📱 PWA a iPhone nastavenia -->
-  <!-- cyklus.png = ikona PWA na ploche -->
+  <!-- Ikony -->
+  <link rel="apple-touch-icon" href="./cyklus.png?v=7">
+  <link rel="apple-touch-icon" sizes="180x180" href="./cyklus.png?v=7">
+  <link rel="apple-touch-icon" sizes="512x512" href="./cyklus.png?v=7">
+  <link rel="icon" type="image/png" href="./cyklus.png?v=7">
+  <meta property="og:image" content="./cyklus.png?v=7">
+
+  <!-- PWA -->
   <link rel="manifest" href="./manifest.webmanifest" />
-  <link rel="icon" type="image/png" href="./cyklus.png?v=7" />
-  <meta property="og:image" content="./cyklus.png?v=7" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="Doplnkový cyklus" />
-  <meta name="theme-color" content="#3b82f6" />
-
-  <!-- apple-touch-icon.png = obrázok vnútri aplikácie -->
-  <link rel="apple-touch-icon" href="./cyklus.png?v=7" sizes="512x512" />
 
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    :root { --card-r: 18px; }
 
-    /* === Základ === */
+  <style>
     body {
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial;
       background: radial-gradient(circle at 50% 0%, #ffffff 0%, #dbeafe 35%, #cbd5e1 100%);
       color: #111827;
       overflow-x: hidden;
+      padding: 20px;
     }
 
-    /* Fix pre orezané tlačidlo */
-    #addSupplement {
-      min-width: 90px;
-      white-space: nowrap;
-    }
-
-    /* === Aplikácia === */
     .app {
       width: 100%;
       max-width: 420px;
-      background: rgba(255,255,255,0.92);
+      background: rgba(255,255,255,0.93);
       backdrop-filter: blur(10px) saturate(1.2);
       border-radius: 22px;
       border: 1px solid rgba(255,255,255,0.5);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.6);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
       padding: 22px;
     }
 
-    /* (všetky tvoje pôvodné štýly zanechávam) */
+    .author-box {
+      background: linear-gradient(90deg, #6366f1 0%, #3b82f6 100%);
+      color: white;
+      font-weight: 700;
+      border-radius: 16px;
+      text-align: center;
+      padding: 8px 16px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+    }
+
+    .supplement-card {
+      border-radius: 20px;
+      padding: 16px 18px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      overflow: hidden;
+      box-shadow: inset 0 1px 2px rgba(255,255,255,0.6), 0 6px 14px rgba(0,0,0,0.25);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .supplement-card:nth-child(odd) {
+      background: linear-gradient(180deg, #ff5252 0%, #c80000 60%, #5a0000 100%);
+    }
+
+    .supplement-card:nth-child(even) {
+      background: linear-gradient(180deg, #4dff91 0%, #00b35a 60%, #005a2e 100%);
+    }
+
+    .left { display: flex; flex-direction: column; gap: 6px; }
+    .left .name { font-weight: 800; font-size: 1.05rem; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.4); }
+
+    .dose-label {
+      display: inline-block;
+      margin-top: 4px;
+      padding: 4px 9px;
+      border-radius: 10px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #fff;
+      box-shadow: inset 0 1px 2px rgba(255,255,255,0.5), 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .dose-label.orange { background: linear-gradient(180deg,#f7971e 0%,#ffd200 100%); color:#222; }
+    .dose-label.blue { background: linear-gradient(180deg,#56ccf2 0%,#2f80ed 100%); }
+    .dose-label.green { background: linear-gradient(180deg,#38ef7d 0%,#11998e 100%); }
+
+    .right { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+    .time-chip {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.8rem;
+      background: #fff;
+      border-radius: 8px;
+      padding: 3px 7px;
+      border: 1px solid rgba(0,0,0,0.15);
+    }
+
+    button {
+      font-weight: 700;
+      border-radius: 14px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 3px 10px rgba(0,0,0,0.25);
+      transition: transform 0.15s ease-in-out;
+    }
+    button:hover { transform: scale(1.02); }
   </style>
 </head>
 
-<body class="flex flex-col items-center p-4">
-  <!-- Hlavička -->
-  <img src="./apple-touch-icon.png" alt="Doplnky" class="w-20 h-20 rounded-full shadow-md mb-2" />
+<body class="flex flex-col items-center">
 
-  <h1 class="text-2xl font-extrabold mb-1 text-center text-blue-700 flex items-center justify-center gap-2">
-    💊 Môj doplnkový cyklus
-  </h1>
-  <p class="text-sm font-semibold text-purple-600 mb-3">🧠 Vytvoril Ivan Kebra Nagast</p>
+  <img src="./apple-touch-icon.png" alt="Doplnky" class="w-20 h-20 rounded-full shadow-md mb-2">
+  <h1 class="text-2xl font-extrabold mb-3 text-center">💊 Môj doplnkový cyklus</h1>
+  <div class="author-box">🌟 Vytvoril IvanKebraNagast 🌟</div>
 
   <div class="app">
-    <!-- Zoznam doplnkov -->
     <div id="supplementList" class="mb-4"></div>
-
-    <!-- Pridanie doplnku -->
-    <div class="flex gap-2 mb-2">
-      <input id="newSupplement" type="text" placeholder="Názov doplnku…" class="flex-1 border border-gray-300 rounded-lg px-3 py-2" />
-      <button id="addSupplement" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700">Pridať</button>
-    </div>
-
-    <button id="resetAll" class="w-full bg-red-500 text-white rounded-lg py-2 mt-2 hover:bg-red-600" data-confirm="false">🔁 Resetovať dáta</button>
-    <button id="enableNotifs" class="w-full bg-green-500 text-white rounded-lg py-2 mt-2 hover:bg-green-600">🔔 Povoliť notifikácie</button>
-
-    <!-- Tvoja pôvodná aplikácia zostáva bezo zmeny -->
-    <!-- (graf, doplnky, cykly, modal, logika atď.) -->
+    <button id="resetAll" class="w-full bg-red-500 text-white py-2 mt-2">🔁 Resetovať dáta</button>
+    <button id="enableNotifs" class="w-full bg-green-500 text-white py-2 mt-2">🔔 Povoliť notifikácie</button>
   </div>
 
   <script>
-    /* celý tvoj pôvodný JavaScript kód zostáva rovnaký */
+    const $ = s => document.querySelector(s);
+    const listEl = $('#supplementList');
+
+    const defaultSupplements = [
+      { name:"Ecdysterone", doseQuantity:"1 kapsula", doseContext:"po raňajkách", plan:{times:["08:30"]}},
+      { name:"Kreatín", doseQuantity:"3 kapsuly", doseContext:"po raňajkách, alebo pred tréningom", plan:{times:["08:30"]}},
+      { name:"L-Lysine", doseQuantity:"1 tabletka", doseContext:"pred raňajkami", plan:{times:["08:00"]}},
+      { name:"NMN", doseQuantity:"1 kapsula", doseContext:"pred raňajkami", plan:{times:["08:00"]}},
+      { name:"Ashwagandha", doseQuantity:"1 kapsula", doseContext:"po raňajkách, 1 kapsula hodinu pred spaním", plan:{times:["08:30","20:30"]}},
+      { name:"Moringa", doseQuantity:"3 kapsuly", doseContext:"po raňajkách", plan:{times:["08:30"]}},
+      { name:"Omega-3", doseQuantity:"1 kapsula", doseContext:"po raňajkách", plan:{times:["08:30"]}},
+      { name:"Move Free Joint Health", doseQuantity:"1 kapsula", doseContext:"po raňajkách, 1 kapsula po obede, 1 kapsula pred spaním", plan:{times:["08:30","14:00","20:30"]}}
+    ];
+
+    function readLS(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}}
+    function writeLS(k,v){localStorage.setItem(k,JSON.stringify(v))}
+
+    let supplements = (() => {
+      const saved = readLS('supplements');
+      if (!saved || saved.length < 8) {
+        writeLS('supplements', defaultSupplements);
+        return defaultSupplements;
+      }
+      return saved;
+    })();
+
+    function render() {
+      listEl.innerHTML = "";
+      supplements.forEach((s,i)=>{
+        const row = document.createElement('div');
+        row.className = "supplement-card";
+        const labelClass = s.doseContext.includes("raňaj") ? "orange" :
+                           s.doseContext.includes("tréning") ? "blue" : "green";
+        row.innerHTML = `
+          <div class="left">
+            <span class="name">${s.name}</span>
+            <span class="dose-label ${labelClass}">${s.doseQuantity} ${s.doseContext}</span>
+          </div>
+          <div class="right">
+            ${s.plan.times.map(t=>`<span class="time-chip">${t}</span>`).join("")}
+          </div>`;
+        listEl.appendChild(row);
+      });
+    }
+
+    $('#resetAll').onclick = () => {
+      localStorage.clear();
+      location.reload();
+    };
+
+    $('#enableNotifs').onclick = async () => {
+      try {
+        const perm = await Notification.requestPermission();
+        if(perm==='granted') new Notification("🔔 Notifikácie povolené",{body:"Budem ti pripomínať časy užívania doplnkov."});
+      } catch(e){ console.log(e); }
+    };
+
+    render();
+
+    if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
   </script>
 </body>
 </html>
