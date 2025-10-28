@@ -5,20 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Môj doplnkový cyklus 💊</title>
 
- <!-- 🧩 PWA nastavenia pre iPhone a iPad -->
-<link rel="manifest" href="./manifest.webmanifest" />
+  <!-- 🧩 PWA nastavenia pre iPhone a iPad -->
+  <link rel="manifest" href="./manifest.webmanifest" />
 
-<!-- iPhone / iPad ikona -->
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=6" />
+  <!-- iPhone / iPad ikona -->
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=7" />
 
-<!-- Web App režim -->
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-title" content="Doplnkový cyklus" />
-<meta name="theme-color" content="#3b82f6" />
+  <!-- Web App režim -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Doplnkový cyklus" />
+  <meta name="theme-color" content="#3b82f6" />
 
-<!-- Open Graph a favicon -->
-<meta property="og:image" content="./cyklus.png?v=6" />
-<link rel="icon" type="image/png" href="./cyklus.png?v=6" />
+  <!-- Open Graph a favicon -->
+  <meta property="og:image" content="./cyklus.png?v=7" />
+  <link rel="icon" type="image/png" href="./cyklus.png?v=7" />
 
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -117,9 +117,10 @@
     window.addEventListener("load", nacitaj);
 
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("./sw.js");
+      navigator.serviceWorker.register("./sw.js?v=7").then(() => {
+        console.log("✅ Service Worker registrovaný");
+      });
     }
   </script>
 </body>
 </html>
-
