@@ -1,12 +1,20 @@
-"icons": [
-  {
-    "src": "./cyklus.png?v=6",
-    "sizes": "180x180",
-    "type": "image/png"
-  },
-  {
-    "src": "./cyklus.png?v=6",
-    "sizes": "512x512",
-    "type": "image/png"
-  }
-]
+{
+  "name": "Môj doplnkový cyklus 💊",
+  "short_name": "Doplnkový cyklus",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "cyklus.png?v=6",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
