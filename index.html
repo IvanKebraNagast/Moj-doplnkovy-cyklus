@@ -9,7 +9,8 @@
   <link rel="apple-touch-icon" href="./cyklus.png?v=6">
   <link rel="apple-touch-icon" sizes="180x180" href="./cyklus.png?v=6">
   <link rel="apple-touch-icon" sizes="512x512" href="./cyklus.png?v=6">
-  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="manifest" href="./manifest.we
+  bmanifest">
   <link rel="icon" type="image/png" href="./cyklus.png?v=6">
   <meta property="og:image" content="./cyklus.png?v=6">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -111,10 +112,12 @@
     <div id="supplementList" class="mb-4"></div>
 
     <!-- Pridanie doplnku -->
-    <div class="flex gap-2 mb-2">
-      <input id="newSupplement" type="text" placeholder="Názov doplnku…" class="flex-1 border border-gray-300 rounded-lg px-3 py-2">
-      <button id="addSupplement" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700">Pridať</button>
-    </div>
+    <div class="grid gap-2 mb-3">
+  <input id="newSupplement" type="text" placeholder="Názov doplnku…" class="border border-gray-300 rounded-lg px-3 py-2">
+  <input id="newDose" type="text" placeholder="Dávka (napr. 1 kapsula)" class="border border-gray-300 rounded-lg px-3 py-2">
+  <input id="newContext" type="text" placeholder="Poznámka (napr. po raňajkách)" class="border border-gray-300 rounded-lg px-3 py-2">
+  <button id="addSupplement" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700">Pridať</button>
+</div>
 
     <button id="resetAll" class="w-full bg-red-500 text-white rounded-lg py-2 mt-2 hover:bg-red-600" data-confirm="false">🔁 Resetovať dáta</button>
     <button id="enableNotifs" class="w-full bg-green-500 text-white rounded-lg py-2 mt-2 hover:bg-green-600">🔔 Povoliť notifikácie</button>
@@ -442,21 +445,30 @@
 
     /* ---------- Pridanie nového doplnku ---------- */
     btnAdd.onclick = ()=>{
-      const name = addEl.value.trim();
-      if(!name) return;
-      const newIndex = supplements.push({
-        name,
-        doseQuantity:"1 ks",
-        doseContext:"ráno",
-        plan:{ days:["Po","Ut","St","Št","Pi","So","Ne"], times:["08:30"] },
-        startDate: todayISO(),
-        cycleConfig:{durationWeeks:0, pauseWeeks:0}
-      }) - 1;
-      addEl.value = "";
-      writeLS('supplements', supplements);
-      openPlan(newIndex);
-      renderAll();
-    };
+  const name = addEl.value.trim();
+  const dose = document.getElementById('newDose').value.trim() || "1 ks";
+  const context = document.getElementById('newContext').value.trim() || "ráno";
+
+  if(!name) return;
+
+  const newIndex = supplements.push({
+    name,
+    doseQuantity: dose,
+    doseContext: context,
+    plan:{ days:["Po","Ut","St","Št","Pi","So","Ne"], times:["08:30"] },
+    startDate: todayISO(),
+    cycleConfig:{durationWeeks:0, pauseWeeks:0}
+  }) - 1;
+
+  addEl.value = "";
+  document.getElementById('newDose').value = "";
+  document.getElementById('newContext').value = "";
+
+  writeLS('supplements', supplements);
+  openPlan(newIndex);
+  renderAll();
+};
+
 
     /* ---------- Reset ---------- */
     btnReset.onclick = ()=>{
@@ -577,3 +589,4 @@
   </script>
 </body>
 </html>
+
