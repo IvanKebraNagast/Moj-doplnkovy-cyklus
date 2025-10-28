@@ -7,13 +7,8 @@
   "theme_color": "#3b82f6",
   "icons": [
     {
-      "src": "cyklus.png?v=6",
+      "src": "cyklus.png?v=7",
       "sizes": "512x512",
-      "type": "image/png"
-    },
-    {
-      "src": "apple-touch-icon.png?v=6",
-      "sizes": "180x180",
       "type": "image/png",
       "purpose": "any maskable"
     }
