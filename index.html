@@ -1,597 +1,97 @@
 <!DOCTYPE html>
 <html lang="sk">
 <head>
-   <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Môj doplnkový cyklus 💊</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Môj doplnkový cyklus 💊</title>
 
-<!-- iPhone / iPad ikona -->
-<link rel="apple-touch-icon" href="./cyklus.png?v=6">
-<link rel="apple-touch-icon" sizes="180x180" href="./cyklus.png?v=6">
-<link rel="apple-touch-icon" sizes="512x512" href="./cyklus.png?v=6">
+  <!-- PWA -->
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <meta name="theme-color" content="#3b82f6" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Doplnkový cyklus" />
+  <link rel="apple-touch-icon" href="./cyklus.png" />
+  <meta property="og:image" content="./cyklus.png" />
+  <link rel="icon" type="image/png" href="./cyklus.png" />
 
-<!-- PWA -->
-<link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" type="image/png" href="./cyklus.png?v=6">
-<meta property="og:image" content="./cyklus.png?v=6">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Doplnkový cyklus">
-
-
-
-
-<!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
-<style>:root { --card-r: 18px; }/* === Základ === */body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial; background: radial-gradient(circle at 50% 0%, #ffffff 0%, #dbeafe 35%, #cbd5e1 100%); color: #111827; overflow-x: hidden; }/* === Aplikácia === */.app { width: 100%; max-width: 420px; background: rgba(255,255,255,0.92); backdrop-filter: blur(10px) saturate(1.2); border-radius: 22px; border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 8px 25px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.6); padding: 22px; }/* === Lesklé doplnkové karty === */.supplement-card { position: relative; border-radius: 20px; padding: 16px 18px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; overflow: hidden; transform: translateZ(0); box-shadow: inset 0 1px 2px rgba(255,255,255,0.6), 0 6px 14px rgba(0,0,0,0.25); transition: transform .2s ease, box-shadow .2s ease; }.supplement-card:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }/* Červená / zelená pre striedanie */.supplement-card:nth-child(odd) { background: linear-gradient(180deg, #ff5252 0%, #c80000 60%, #5a0000 100%); } .supplement-card:nth-child(even) { background: linear-gradient(180deg, #4dff91 0%, #00b35a 60%, #005a2e 100%); } 
-/* NOVÉ ŠTÝLY PRE CYKLY */
-.supplement-card.warn {
-    /* Žlté/oranžové upozornenie */
-    background: linear-gradient(180deg, #ffcc00 0%, #ff9900 60%, #cc7a00 100%);
-    box-shadow: inset 0 1px 2px rgba(255,255,255,0.8), 0 6px 14px rgba(0,0,0,0.35);
-}
-.supplement-card.pause {
-    /* Šedé pre pauzu */
-    background: linear-gradient(180deg, #9ca3af 0%, #4b5563 60%, #1f2937 100%);
-    box-shadow: inset 0 1px 2px rgba(255,255,255,0.4), 0 6px 14px rgba(0,0,0,0.15);
-}
-.supplement-card.pause:hover { transform: none; box-shadow: inset 0 1px 2px rgba(255,255,255,0.4), 0 6px 14px rgba(0,0,0,0.15); }
-.supplement-card.pause::before { opacity: 0.1; animation: none; }
-.pause-message {
-    color: #fff;
-    font-weight: 600;
-    font-size: 0.9rem;
-    padding-left: 10px;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
-    text-align: right;
-    z-index: 2; /* nad prelivom */
-}
-.supplement-card.warn .left .name, .supplement-card.warn .dose-label { color: #333; text-shadow: none; }
-/* Koniec NOVÝCH ŠTÝLOV */
-
-/* Svetelný preliv ako na aute */.supplement-card::before { content: ""; position: absolute; inset: 0; background: linear-gradient(120deg, rgba(255,255,255,0.8) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.25) 100%); opacity: 0.6; mix-blend-mode: screen; transform: translateX(-100%); animation: shineSweep 6s linear infinite; } @keyframes shineSweep { 0% { transform: translateX(-100%); opacity: 0.0; } 40% { opacity: 0.8; } 60% { opacity: 0.8; } 100% { transform: translateX(120%); opacity: 0.0; } } /* Text v kartách */.left { display: flex; flex-direction: column; gap: 6px; z-index: 2; } .left .name { font-weight: 800; font-size: 1.05rem; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.4); } /* Dávkovacie štítky */.dose-label { display: inline-block; margin: 3px 5px 0 0; padding: 4px 9px; border-radius: 10px; font-size: 0.78rem; font-weight: 600; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.3); box-shadow: inset 0 1px 2px rgba(255,255,255,0.5), 0 2px 4px rgba(0,0,0,0.2); } .dose-label.green { background: linear-gradient(180deg, #38ef7d 0%, #11998e 100%); } .dose-label.blue { background: linear-gradient(180deg, #56ccf2 0%, #2f80ed 100%); } .dose-label.orange{ background: linear-gradient(180deg, #f7971e 0%, #ffd200 100%); color:#222; text-shadow:none; } .dose-label.gray { background: linear-gradient(180deg, #d1d5db 0%, #9ca3af 100%); color:#222; } /* Pravá časť (ikony a časy) */.right { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; z-index: 2; } .time-chip { display: inline-flex; align-items: center; font-size: 0.8rem; background: #fff; border-radius: 8px; padding: 3px 7px; border: 1px solid rgba(0,0,0,0.15); box-shadow: inset 0 1px 2px rgba(255,255,255,0.8); } /* Ikony vpravo */.right .icon { font-size: 20px; color: #fff; opacity: .9; text-shadow: 0 2px 3px rgba(0,0,0,0.6); transition: transform .2s ease; } .right .icon:hover { transform: scale(1.2); opacity: 1; } /* === Spodné tlačidlá === */button { font-weight: 700; border: none; border-radius: 14px; position: relative; overflow: hidden; transition: all 0.15s ease-in-out; box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 3px 10px rgba(0,0,0,0.25); } button::before { content: ""; position: absolute; inset: 0; background: linear-gradient(120deg, rgba(255,255,255,0.6) 0%, transparent 50%, rgba(255,255,255,0.2) 100%); opacity: .5; transform: translateX(-100%); animation: shineSweep 8s linear infinite; pointer-events: none; } #addSupplement { background: linear-gradient(180deg, #4e9fff 0%, #2563eb 55%, #153aa8 100%); color: white; } #resetAll { background: linear-gradient(180deg, #ff5656 0%, #c90000 55%, #7a0000 100%); color: white; } #enableNotifs { background: linear-gradient(180deg, #4dff91 0%, #00c24b 55%, #006b2e 100%); color: white; } #addSupplement:hover,#resetAll:hover,#enableNotifs:hover { transform: scale(1.02); box-shadow: 0 5px 16px rgba(0,0,0,0.3); } /* === Kruhový graf === */ #progressCircle { filter: drop-shadow(0 0 8px rgba(59,130,246,0.5)) drop-shadow(0 0 8px rgba(22,163,74,0.4)); } #progressLabel { font-weight: 800; fill: url(#grad); text-shadow: 0 0 8px rgba(0,0,0,0.25); } svg circle:first-of-type { stroke: #e5e7eb; opacity: .5; } /* === Pôvodné pill style upravené pre nový dizajn === */ .pill.dosage { /* Zelená farba pre hotové dávky/dávkovanie */ color: #034b28; background: linear-gradient(180deg, #caffdd 0%, #9bf2bf 60%, #5ddf96 100%); box-shadow: inset 0 1px 2px rgba(255,255,255,0.7), 0 1px 3px rgba(0,0,0,0.1); } .pill.time { /* Červená farba pre čakajúce časy */ color: #5f0b0b; background: linear-gradient(180deg, #ffe0e0 0%, #ffc5c5 60%, #ffaaaa 100%); box-shadow: inset 0 1px 2px rgba(255,255,255,0.7), 0 1px 3px rgba(0,0,0,0.1); } /* === NOVÝ ŠTÝL PRE ZVÝRAZNENIE DŇA === */ .day-cell-compact { cursor: default; box-shadow: 0 1px 3px rgba(0,0,0,0.1); } .day-cell-compact.bg-indigo-600 { background-color: #4f46e5; color: white; font-weight: 700; transform: scale(1.02); box-shadow: 0 4px 6px rgba(0,0,0,0.2); } </style>
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f3f4f6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+  </style>
 </head>
-<body class="flex flex-col items-center p-4">
-  <!-- Hlavička -->
-  <img src="./apple-touch-icon.png" alt="Doplnky" class="w-20 h-20 rounded-full shadow-md mb-2">
 
-  <h1 class="text-2xl font-extrabold mb-3 text-center">💊 Môj doplnkový cyklus</h1>
-  <div class="app">
-    <!-- Zoznam doplnkov -->
-    <div id="supplementList" class="mb-4"></div>
-    <!-- Pridanie doplnku -->
-    <div class="flex gap-2 mb-2">
-      <input id="newSupplement" type="text" placeholder="Názov doplnku…"
-             class="flex-1 border border-gray-300 rounded-lg px-3 py-2">
-      <button id="addSupplement"
-              class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700">Pridať</button>
-    </div>
-    <button id="resetAll" class="w-full bg-red-500 text-white rounded-lg py-2 mt-2 hover:bg-red-600" data-confirm="false">🔁 Resetovať dáta</button>
-    <button id="enableNotifs" class="w-full bg-green-500 text-white rounded-lg py-2 mt-2 hover:bg-green-600">🔔 Povoliť notifikácie</button>
-    <!-- Denný status + graf -->
-    <div class="bg-white rounded-2xl p-5 mt-4 border">
-      <!-- NOVÁ SEKCIA: Vizuálny displej aktuálneho dňa -->
-      <h3 class="text-sm text-gray-600 mb-2 font-semibold">Aktuálny deň:</h3>
-      <div id="dayDisplay" class="grid grid-cols-7 gap-1.5 mb-4 text-xs font-semibold text-center">
-        <!-- Dni budú vložené cez JS s automatickým zvýraznením -->
-      </div>
-      
-      <p id="dayStatus" class="text-sm text-gray-600 mb-3 font-medium"></p>
-      <div class="flex items-center justify-center">
-        <svg width="164" height="164" viewBox="0 0 120 120">
-          <defs>
-            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%"  stop-color="#2563eb"/>
-              <stop offset="100%" stop-color="#16a34a"/>
-            </linearGradient>
-          </defs>
-          <circle cx="60" cy="60" r="54" stroke="#e5e7eb" stroke-width="10" fill="none"/>
-          <circle id="progressCircle" cx="60" cy="60" r="54"
-                  stroke="url(#grad)" stroke-width="10" fill="none"
-                  stroke-linecap="round"
-                  stroke-dasharray="339.292" stroke-dashoffset="339.292"
-                  transform="rotate(-90 60 60)"/>
-          <text id="progressLabel" x="50%" y="50%" text-anchor="middle" dy="6" font-size="16" class="fill-gray-800">0%</text>
-        </svg>
-      </div>
-      <div id="todayChips" class="mt-3 flex flex-wrap gap-2"></div>
-    </div>
-  </div>
-  <!-- MODAL – Plán -->
-  <div id="planModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-2xl p-6 w-96 max-w-full">
-      <h2 id="modalTitle" class="text-lg font-bold mb-4 text-center">🕓 Plán užívania </h2>
-      <div class="space-y-4">
-        <div>
-          <h3 class="font-semibold mb-2">📅 Dni v týždni</h3>
-          <div id="dayChecks" class="grid grid-cols-7 gap-2 text-sm"></div>
-        </div>
-        <!-- NOVÉ POLE: Konfigurácia cyklu -->
-        <div id="cycleConfigFields" class="border p-3 rounded-lg bg-gray-50 hidden">
-            <h3 class="font-semibold mb-2 text-indigo-700">🔄 Cyklovanie (Nastavené automaticky)</h3>
-            <div class="flex gap-2">
-                <div class="flex-1">
-                    <label class="text-xs text-gray-500 block">Dĺžka cyklu (týždne):</label>
-                    <input id="cycleDuration" type="number" min="1" class="w-full border rounded-lg px-2 py-1" disabled>
-                </div>
-                <div class="flex-1">
-                    <label class="text-xs text-gray-500 block">Dĺžka pauzy (týždne):</label>
-                    <input id="cyclePause" type="number" min="1" class="w-full border rounded-lg px-2 py-1" disabled>
-                </div>
-            </div>
-            <p id="cycleStatusMsg" class="text-sm mt-2 text-red-500 font-medium"></p>
-        </div>
-        <!-- Koniec NOVÉHO POĽA -->
-        <div>
-          <h3 class="font-semibold mb-2">⏰ Časy (hh:mm)</h3>
-          <div id="timeList" class="space-y-2"></div>
-          <button id="addTime" class="mt-2 px-3 py-1 rounded-lg border border-gray-300 text-sm hover:bg-gray-50">+ pridať čas</button>
-        </div>
-        <div class="flex gap-2 pt-1">
-          <button id="savePlan" class="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">💾 Uložiť plán</button>
-          <button id="closePlan" class="flex-1 bg-gray-400 text-white py-2 rounded-lg hover:bg-gray-500">Zavrieť</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <script>
-    /* ---------- helpers ---------- */
-    const $ = s => document.querySelector(s);
-    const $$ = s => [...document.querySelectorAll(s)];
-    const dayShorts = ["Po","Ut","St","Št","Pi","So","Ne"];
-    const dayLongs = ["Pondelok", "Utorok", "Streda", "Štvrtok", "Piatok", "Sobota","Nedeľa"];
-    const todayISO = () => new Date().toISOString().slice(0,10);
-    const todayShort = () => dayShorts[(new Date().getDay()+6)%7]; // Po=0, ..., Ne=6
-    const readLS = (k,d)=>{ try{ return JSON.parse(localStorage.getItem(k)) ?? d; }catch{ return d } };
-    const writeLS = (k,v)=> localStorage.setItem(k, JSON.stringify(v));
-   const doseContexts = [
-  "ráno", "pred raňajkami", "po raňajkách",
-  "pred obedom", "po obede",
-  "pred tréningom", "po tréningu",
-  "večer", "pred spaním",
-  "pred jedlom", "po jedle",
-  "kedykoľvek (s jedlom)", "kedykoľvek (nalačno)"
-];
+<body class="text-center">
+  <h1 class="text-2xl font-bold text-blue-600 mb-4">💊 Môj doplnkový cyklus</h1>
 
-    // Doplnky s novými cyklami
-    const defaultSupplements = [
-      { 
-          name: "Ecdysterone",  
-          doseQuantity: "1 kapsula", 
-          doseContext: "po raňajkách", 
-          plan:{days:["Po","Ut","St","Št","Pi","So","Ne"], times:["08:30"]},
-          cycleConfig: { durationWeeks: 12, pauseWeeks: 4 } // 12 týždňov ON / 4 týždne OFF
-      },
-      { 
-          name: "Kreatín",      
-          doseQuantity: "3 kapsuly", 
-          doseContext: "po raňajkách, alebo pred tréningom", 
-          plan:{days:["Po","Ut","St","Št","Pi","So","Ne"], times:["08:30"]},
-          cycleConfig: { durationWeeks: 10, pauseWeeks: 4 } // 10 týždňov ON / 4 týždne OFF
-      },
-      { name: "L-Lysine",     doseQuantity: "1 tabletka", doseContext: "pred raňajkami", plan:{days:["Po","Ut","St","Št","Pi","So","Ne"], times:["08:00"]}, cycleConfig: { durationWeeks: 0, pauseWeeks: 0 } },
-      { 
-          name: "NMN",          
-          doseQuantity: "1 kapsula", 
-          doseContext: "pred raňajkami", 
-          plan:{days:["Po","Ut","St","Št","Pi"], times:["08:00"]}, // Užívanie len Po-Pi
-          cycleConfig: { durationWeeks: 0, pauseWeeks: 0 } // Logika v getCycleStatus
-      },
-      { name: "Ashwagandha",  doseQuantity: "1 kapsula", doseContext: "po raňajkách,1 kapsula hodinu pred spaním", plan:{days:["Po","Ut","St","Št","Pi","So","Ne"], times:["08:30", "20:30"]}, cycleConfig: { durationWeeks: 0, pauseWeeks: 0 } },
-      { name: "Moringa",      doseQuantity: "3 kapsuly", doseContext: "po raňajkách", plan:{days:["Po","Ut","St","Št","Pi","So","Ne"], times:["08:30"]}, cycleConfig: { durationWeeks: 0, pauseWeeks: 0 } },
-      { name: "Omega-3",      doseQuantity: "1 kapsula", doseContext: "po raňajkách", plan:{days:["Po","Ut","St","Št","Pi","So","Ne"], times:["08:30"]}, cycleConfig: { durationWeeks: 0, pauseWeeks: 0 } },
-      { name: "Move Free Joint Health",      doseQuantity: "1 kapsula", doseContext: "po raňajkách, 1 kapsula po obede,1 kapsula hodinu pred spaním", plan:{days:["Po","Ut","St","Št","Pi","So","Ne"], times:["08:30","14:00","20:30"]}, cycleConfig: { durationWeeks: 0, pauseWeeks: 0 } }
-    ];
-    let supplements = readLS('supplements', defaultSupplements);
-    let history     = readLS('history', {});
-    
-    // Nastavenie počiatočných hodnôt (startDate, cycleConfig) pre staré záznamy
-    function initializeSupplements() {
-        supplements.forEach(s => {
-            if (!s.startDate) {
-                s.startDate = todayISO();
-            }
-            if (!s.cycleConfig || s.cycleConfig.durationWeeks === undefined) {
-                // Pokus nájsť default config
-                const defaultConfig = defaultSupplements.find(d => d.name === s.name);
-                s.cycleConfig = defaultConfig?.cycleConfig || { durationWeeks: 0, pauseWeeks: 0 };
-            }
-        });
-        writeLS('supplements', supplements);
+  <div id="formular" class="w-full max-w-md bg-white p-4 rounded-lg shadow">
+    <label class="block mb-2 text-left text-gray-700 font-semibold">Názov doplnku</label>
+    <input id="nazov" type="text" placeholder="Napr. Kreatín" class="border w-full p-2 rounded mb-3" />
+
+    <label class="block mb-2 text-left text-gray-700 font-semibold">Dávka</label>
+    <input id="davka" type="text" placeholder="Napr. 5g" class="border w-full p-2 rounded mb-3" />
+
+    <button id="pridat" class="bg-blue-500 text-white px-4 py-2 rounded min-w-[100px] whitespace-nowrap overflow-hidden">
+      Pridať
+    </button>
+  </div>
+
+  <ul id="zoznam" class="mt-6 w-full max-w-md text-left space-y-2"></ul>
+
+  <script>
+    // localStorage logika
+    const nazovInput = document.getElementById("nazov");
+    const davkaInput = document.getElementById("davka");
+    const zoznam = document.getElementById("zoznam");
+
+    function nacitaj() {
+      const ulozene = JSON.parse(localStorage.getItem("doplnky") || "[]");
+      zoznam.innerHTML = "";
+      ulozene.forEach((polozka, i) => {
+        const li = document.createElement("li");
+        li.className = "bg-gray-100 p-2 rounded flex justify-between items-center";
+        li.innerHTML = `
+          <span>${polozka.nazov} — <strong>${polozka.davka}</strong></span>
+          <button onclick="zmaz(${i})" class="text-red-500 font-bold">✕</button>
+        `;
+        zoznam.appendChild(li);
+      });
     }
 
-    /* ---------- UI refs ---------- */
-    const listEl   = $('#supplementList');
-    const addEl    = $('#newSupplement');
-    const btnAdd   = $('#addSupplement');
-    const btnReset = $('#resetAll');
-    const btnNotif = $('#enableNotifs');
-    const dayStatus = $('#dayStatus');
-    const progressCircle = $('#progressCircle');
-    const progressLabel  = $('#progressLabel');
-    const todayChips = $('#todayChips');
-    const dayDisplay = $('#dayDisplay'); 
-    const planModal = $('#planModal');
-    const modalTitle= $('#modalTitle');
-    const dayChecks = $('#dayChecks');
-    const timeList  = $('#timeList');
-    const btnAddTime= $('#addTime');
-    const btnSavePlan=$('#savePlan');
-    const btnClosePlan=$('#closePlan');
-    const cycleConfigFields = $('#cycleConfigFields'); // Nový ref
-    const cycleDuration = $('#cycleDuration'); // Nový ref
-    const cyclePause = $('#cyclePause'); // Nový ref
-    const cycleStatusMsg = $('#cycleStatusMsg'); // Nový ref
-
-    let editingIndex = -1;
-    
-    /* ---------- Cycle Logic (NEW) ---------- */
-    // Vracia status a správu o cykle
-    function getCycleStatus(supp) {
-        const todayDayIndex = new Date().getDay(); // 0=Nedeľa, 1=Pondelok, ..., 6=Sobota
-
-        // 1. NMN VÍKEND PAUZA (Logika aj pre dni, ktoré nie sú v pláne)
-        if (supp.name === "NMN") {
-            if (todayDayIndex === 0 || todayDayIndex === 6) { // Nedeľa alebo Sobota
-                return { status: 'PAUSE', message: "Víkendová pauza. Užívanie sa obnoví v pondelok." };
-            }
-        }
-        
-        // Ak doplnok nemá definovaný dlhý cyklus, je vždy ON (okrem NMN)
-        if (!supp.cycleConfig || supp.cycleConfig.durationWeeks === 0) {
-            return { status: 'ON', message: '' };
-        }
-
-        const start = new Date(supp.startDate);
-        const now = new Date();
-        const diffTime = Math.abs(now - start);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        
-        const daysInCycle = supp.cycleConfig.durationWeeks * 7;
-        const daysInPause = supp.cycleConfig.pauseWeeks * 7;
-        const totalCycleDays = daysInCycle + daysInPause;
-
-        // Vypočíta dni uplynulé od začiatku celého bloku (cyklus + pauza)
-        const daysIntoCurrentBlock = diffDays % totalCycleDays; 
-        
-        const daysLeftInCycle = daysInCycle - daysIntoCurrentBlock;
-        const daysLeftInPause = totalCycleDays - daysIntoCurrentBlock;
-
-        // PAUZA fáza
-        if (daysIntoCurrentBlock >= daysInCycle) {
-            const daysIntoPause = daysIntoCurrentBlock - daysInCycle;
-            return { 
-                status: 'PAUSE', 
-                message: `POVINNÁ PAUZA (${supp.cycleConfig.pauseWeeks} týždňov). Zostáva: ${daysLeftInPause} dní.` 
-            };
-        }
-        
-        // Cyklus ON fáza
-        if (daysIntoCurrentBlock < daysInCycle) {
-            // UPOZORNENIE: Ak zostáva 7 dní alebo menej
-            if (daysLeftInCycle <= 7) {
-                return { 
-                    status: 'WARN', 
-                    message: `⚠️ Cyklus končí o ${daysLeftInCycle} dní. Nasleduje ${supp.cycleConfig.pauseWeeks} týždňov pauza.` 
-                };
-            }
-            const weeksLeft = Math.ceil(daysLeftInCycle / 7);
-            return { 
-                status: 'ON', 
-                message: `Cyklus: ${supp.cycleConfig.durationWeeks} týždňov. Zostáva: ${weeksLeft} týždňov.` 
-            };
-        }
-        
-        // Default (nemalo by sa stať)
-        return { status: 'ON', message: '' };
+    function pridat() {
+      const nazov = nazovInput.value.trim();
+      const davka = davkaInput.value.trim();
+      if (!nazov || !davka) return;
+      const doplnky = JSON.parse(localStorage.getItem("doplnky") || "[]");
+      doplnky.push({ nazov, davka });
+      localStorage.setItem("doplnky", JSON.stringify(doplnky));
+      nazovInput.value = "";
+      davkaInput.value = "";
+      nacitaj();
     }
 
-    /* ---------- render list (with glossy cards) ---------- */
-    function renderSupplements(){
-      listEl.innerHTML = "";
-      supplements.forEach((supp,i)=>{
-          const cycleStatus = getCycleStatus(supp);
-          const isPaused = cycleStatus.status === 'PAUSE';
-          const isWarning = cycleStatus.status === 'WARN';
+    function zmaz(i) {
+      const doplnky = JSON.parse(localStorage.getItem("doplnky") || "[]");
+      doplnky.splice(i, 1);
+      localStorage.setItem("doplnky", JSON.stringify(doplnky));
+      nacitaj();
+    }
 
-        const isToday = supp.plan.days.includes(todayShort());
-        const timesToday = isToday ? [...supp.plan.times].sort() : [];
-        const row = document.createElement('div');
-        
-        let cardClass = "";
-        if (isPaused) cardClass = "pause";
-        else if (isWarning) cardClass = "warn";
-        else cardClass = i % 2 === 0 ? "odd" : "even";
+    document.getElementById("pridat").addEventListener("click", pridat);
+    window.addEventListener("load", nacitaj);
 
-        row.className = `supplement-card ${cardClass}`;
-        
-        const left = document.createElement('div');
-        left.className = "left";
-
-        let dosageText = "";
-        let dosageClass = "green"; 
-        const quantity = supp.doseQuantity || "1 ks";
-        const context = supp.doseContext || "ráno";
-        dosageText = `${quantity} ${context}`;
-
-        if (context.includes("raňajkami") || context.includes("ráno")) {
-          dosageClass = "orange";
-        } else if (context.includes("obed") || context.includes("tréningom")) {
-          dosageClass = "blue";
-        } else if (context.includes("večer") || context.includes("spaním")) {
-          dosageClass = "green";
-        } else {
-          dosageClass = "gray";
-        }
-
-        left.innerHTML =
-          `<span class="name">${supp.name}</span>
-          ${dosageText ? `<span class="dose-label ${dosageClass}">${dosageText}</span>` : ''}`
-        ;
-        row.appendChild(left);
-        
-        const right = document.createElement('div');
-        right.className = isPaused ? "flex items-center" : "right";
-
-        if (isPaused) {
-            // Ak je pauza, zobrazíme len správu
-            const msgEl = document.createElement('div');
-            msgEl.className = "pause-message text-sm text-right";
-            msgEl.innerHTML = `PAUZA<br>${cycleStatus.message.replace('POVINNÁ PAUZA: ', '')}`;
-            right.appendChild(msgEl);
-            // Pridáme tlačidlo Plán, ale nie checkbox ani del
-            const planBtn = document.createElement('button');
-            planBtn.className = "icon"; planBtn.title = "Plán užívania"; planBtn.textContent = "🕓";
-            planBtn.onclick = ()=> openPlan(i);
-            right.appendChild(planBtn);
-        } else {
-            // Ak nie je pauza, zobrazíme časy a tlačidlá
-            timesToday.forEach(t=>{
-                const checked = !!(history[todayISO()] && history[todayISO()][supp.name] && history[todayISO()][supp.name][t]);
-                const wrap = document.createElement('label');
-                wrap.className = "time-chip";
-                wrap.innerHTML = `<input type="checkbox" class="accent-blue-600 time-taken" data-name="${supp.name}" data-time="${t}" ${checked?'checked':''}> ${t}`;
-                right.appendChild(wrap);
-            });
-            
-            // Pridáme upozornenie, ak je WARN
-            if (isWarning) {
-                 const warnEl = document.createElement('span');
-                 warnEl.className = "pause-message text-xs text-center w-full";
-                 warnEl.textContent = cycleStatus.message;
-                 right.appendChild(warnEl);
-            }
-
-            const planBtn = document.createElement('button');
-            planBtn.className = "icon"; planBtn.title = "Plán užívania"; planBtn.textContent = "🕓";
-            planBtn.onclick = ()=> openPlan(i);
-            right.appendChild(planBtn);
-        }
-        
-        const delBtn = document.createElement('button');
-        delBtn.className = "icon"; delBtn.title = "Odstrániť"; delBtn.textContent = "✖";
-        delBtn.onclick = ()=>{ supplements.splice(i,1); writeLS('supplements',supplements); renderAll(); };
-        right.appendChild(delBtn);
-        
-        row.appendChild(right);
-        listEl.appendChild(row);
-      });
-      $$('.time-taken').forEach(inp=>{
-        inp.addEventListener('change', e=>{
-          const n = e.target.dataset.name;
-          const t = e.target.dataset.time;
-          if(!history[todayISO()]) history[todayISO()] = {};
-          if(!history[todayISO()][n]) history[todayISO()][n] = {};
-          history[todayISO()][n][t] = e.target.checked;
-          writeLS('history', history);
-          renderAll(false);
-        });
-      });
-    }
-    /* ---------- planner modal ---------- */
-    function openPlan(index){
-      editingIndex = index;
-      const supp = supplements[index];
-      // Zmenený názov modalu, keďže už neobsahuje dávkovanie
-      modalTitle.textContent = `🕓 ${supp.name} – Nastavenie cyklu (Dni & Časy)`;
-      
-        // Zobrazenie/skrytie polí cyklovania
-        if (supp.cycleConfig && supp.cycleConfig.durationWeeks > 0) {
-            cycleConfigFields.classList.remove('hidden');
-            cycleDuration.value = supp.cycleConfig.durationWeeks;
-            cyclePause.value = supp.cycleConfig.pauseWeeks;
-            // Zobrazenie dátumu začiatku
-            cycleStatusMsg.textContent = `Začiatok cyklu: ${supp.startDate}. Cyklus sa opakuje automaticky.`;
-        } else {
-            cycleConfigFields.classList.add('hidden');
-        }
-
-      dayChecks.innerHTML = "";
-      dayShorts.forEach(d=>{
-        const lab = document.createElement('label');
-        lab.className = "flex flex-col items-center gap-1 text-sm bg-gray-50 p-1 rounded-lg cursor-pointer hover:bg-gray-100";
-        const id = `d-${d}`;
-        lab.innerHTML = `<input type="checkbox" id="${id}" value="${d}" class="accent-blue-600" ${supp.plan.days.includes(d)?'checked':''}><span>${d}</span>`;
-        dayChecks.appendChild(lab);
-      });
-      timeList.innerHTML = "";
-      // Zabezpečíme, že existuje aspoň jeden čas
-      (supp.plan.times.length ? supp.plan.times : ["08:30"]).sort().forEach(addTimeRow);
-      planModal.classList.remove('hidden');
-    }
-    function addTimeRow(value="08:30"){
-      const w = document.createElement('div');
-      w.className = "flex items-center gap-2";
-      w.innerHTML =
-        `<input type="time" value="${value}" class="time-input border rounded-lg px-3 py-1 flex-1">
-        <button class="px-2 py-1 rounded-lg border border-gray-300 text-red-500 hover:bg-red-50 remove-time">✖</button>`
-      ;
-      timeList.appendChild(w);
-      w.querySelector('.remove-time').onclick = ()=> w.remove();
-    }
-    btnAddTime.onclick = ()=> addTimeRow();
-    btnSavePlan.onclick = ()=>{
-      if(editingIndex<0) return;
-
-      const daysSel = [...dayChecks.querySelectorAll('input[type="checkbox"]:checked')].map(i=>i.value);
-      const timesSel= [...timeList.querySelectorAll('.time-input')].map(i=>i.value).filter(Boolean).sort();
-      
-      supplements[editingIndex].plan = { days: daysSel, times: timesSel.length? timesSel : ["08:30"] };
-      writeLS('supplements', supplements);
-      planModal.classList.add('hidden');
-      renderAll(true);
-    };
-    btnClosePlan.onclick = ()=> planModal.classList.add('hidden');
-    
-    // Automatické nastavenie startDate pri pridaní nového
-    btnAdd.onclick = ()=>{
-      const name = addEl.value.trim();
-      if(!name) return;
-
-      // Nové doplnky začínajú bez dlhého cyklu, ale s dnešným dátumom
-      const newIndex = supplements.push({
-        name,
-        doseQuantity: "1 ks",
-        doseContext: "ráno",
-        plan:{ days:["Po","Ut","St","Št","Pi,So,Ne"], times:["08:30"] },
-        startDate: todayISO(),
-        cycleConfig: { durationWeeks: 0, pauseWeeks: 0 } 
-      }) - 1; 
-
-      addEl.value = "";
-      writeLS('supplements', supplements);
-
-      openPlan(newIndex);
-      renderAll();
-    };
-    
-    btnReset.onclick = ()=>{
-      if (btnReset.dataset.confirm === 'true') {
-        localStorage.removeItem('supplements');
-        localStorage.removeItem('history');
-        location.reload();
-      } else {
-        btnReset.textContent = "KLIKNI ZNOVA PRE POTVRDENIE (Resetuje VŠETKO)!";
-        btnReset.dataset.confirm = 'true';
-        setTimeout(()=>{ btnReset.textContent="🔁 Resetovať dáta"; btnReset.dataset.confirm='false'; }, 3000);
-      }
-    };
-    /* ---------- progress + chips ---------- */
-    function renderProgress(){
-      todayChips.innerHTML = "";
-      const today = todayISO();
-      let total=0, done=0;
-      const doses=[];
-      supplements.forEach(s=>{
-          // Ak je v pauze, nepočítame dávky na dnes
-          if (getCycleStatus(s).status === 'PAUSE') return;
-          
-        if(!s.plan.days.includes(todayShort())) return;
-        s.plan.times.forEach(t=>{
-          const was = !!(history[today] && history[today][s.name] && history[today][s.name][t]);
-          doses.push({name:s.name,time:t,was});
-        });
-      });
-      doses.sort((a,b)=> a.time===b.time ? a.name.localeCompare(b.name) : a.time<b.time?-1:1);
-      doses.forEach(d=>{
-        total++; if(d.was) done++;
-        const chip=document.createElement('span');
-        chip.className = `pill ${d.was?'dosage':'time'}`;
-        chip.textContent = `${d.name} • ${d.time}${d.was?' ✓':''}`;
-        todayChips.appendChild(chip);
-      });
-      const pct = total? Math.round(done/total*100):0;
-      const C = 2*Math.PI*54;
-      progressCircle.setAttribute('stroke-dasharray',C);
-      progressCircle.setAttribute('stroke-dashoffset', C*(1-pct/100));
-      progressLabel.textContent = `${pct}%`;
-      if (!dayStatus.dataset.isError){
-        const weekday = new Date().toLocaleDateString('sk-SK',{weekday:'long'});
-        dayStatus.textContent = `📅 ${weekday} — splnené ${done}/${total} dávok`;
-      }
-    }
-    /* ---------- NOVÁ FUNKCIA: render vizuálny deň ---------- */
-    function renderDayDisplay() {
-      dayDisplay.innerHTML = "";
-      const currentShortDay = todayShort(); // e.g., "Ut"
-      
-      dayShorts.forEach(d => {
-        const isToday = d === currentShortDay;
-        const classes = isToday
-            ? "bg-indigo-600 text-white shadow-lg transform scale-102"
-            : "bg-gray-100 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700";
-        
-        const dayEl = document.createElement('div');
-        dayEl.className = `day-cell-compact ${classes} p-2 rounded-lg transition duration-200`;
-        dayEl.textContent = d;
-        dayDisplay.appendChild(dayEl);
-      });
-    }
-    /* ---------- notifications (OPRAVENÁ ODPORÚČANÁ VERZIA S LOGOVANÍM) ---------- */
-    btnNotif.onclick = async()=>{
-      console.log('Notifikácie: Kliknutie na tlačidlo zachytené.');
-      try {
-        const perm = await Notification.requestPermission();
-
-        if(perm!=='granted'){
-          console.error('Notifikácie zamietnuté alebo blokované.');
-          dayStatus.textContent = "❌ Notifikácie: Povoľ ich v nastaveniach prehliadača (alebo iPhonu/Androidu).";
-          dayStatus.dataset.isError = 'true';
-          setTimeout(()=>{ dayStatus.dataset.isError=''; renderProgress(); }, 5000);
-          return;
-        }
-
-        console.log('Notifikácie povolené, plánovanie...');
-        scheduleTodayNotifications();
-        // Vytvorenie prvej testovacej notifikácie
-        new Notification("🔔 Notifikácie povolené",{body:"Budem ti pripomínať tvoje časy."});
-
-      } catch (error) {
-          // Zachytávanie chýb, ak volanie funkcie Notification zlyhá (napr. v reštriktívnych prehliadačoch)
-          console.error('Chyba pri pokuse o povolenie notifikácií:', error);
-          dayStatus.textContent = "❌ Chyba pri notifikáciách. Skontroluj konzolu pre detaily.";
-          dayStatus.dataset.isError = 'true';
-          setTimeout(()=>{ dayStatus.dataset.isError=''; renderProgress(); }, 5000);
-      }
-    };
-    function scheduleTodayNotifications(){
-      if(Notification.permission!=='granted') return;
-      const now = new Date();
-      supplements.forEach(s=>{
-          // Ak je v pauze, notifikácie nevytvárame
-          if (getCycleStatus(s).status === 'PAUSE') return; 
-          
-        if(!s.plan.days.includes(todayShort())) return;
-        s.plan.times.forEach(t=>{
-          const [h,m]=t.split(':').map(Number);
-          const at=new Date(); at.setHours(h,m,0,0);
-          if(at<=now) return;
-          const delay=at-now;
-          setTimeout(()=>{
-            const was = history[todayISO()] && history[todayISO()][s.name] && history[todayISO()][s.name][t];
-            if(!was) new Notification("💊 Pripomienka",{body:`${s.name} • ${t}`});
-          }, delay);
-        });
-      });
-    }
-    /* ---------- SW ---------- */
-    function registerServiceWorker(){
-      if('serviceWorker' in navigator){
-        navigator.serviceWorker.register('./sw.js').catch(console.error);
-      }
-    }
-    /* ---------- render all ---------- */
-    function renderAll(fromPlanSave=false){
-        initializeSupplements(); // Prebehne vždy, aby sa zabezpečil startDate
-      renderSupplements();
-      renderDayDisplay(); 
-      renderProgress();
-      if(fromPlanSave) scheduleTodayNotifications();
-    }
-    window.addEventListener('load', ()=>{
-      renderAll();
-      if(Notification && Notification.permission==='granted') scheduleTodayNotifications();
-      registerServiceWorker();
-    });
-  </script>
+    // Registrácia service workera
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("./sw.js");
+    }
+  </script>
 </body>
 </html>
-
