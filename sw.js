@@ -1,5 +1,5 @@
 // sw.js — cache pre offline režim
-const CACHE_NAME = "doplnkovy-cyklus-v6";
+const CACHE_NAME = "doplnkovy-cyklus-v7";
 const FILES_TO_CACHE = [
   "./",
   "./index.html",
