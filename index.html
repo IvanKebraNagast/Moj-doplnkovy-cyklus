@@ -471,17 +471,22 @@
 
 
     /* ---------- Reset ---------- */
-    btnReset.onclick = ()=>{
-      if(btnReset.dataset.confirm==='true'){
-        localStorage.removeItem('supplements');
-        localStorage.removeItem('history');
-        location.reload();
-      }else{
-        btnReset.textContent = "KLIKNI ZNOVA PRE POTVRDENIE (Resetuje VŠETKO)!";
-        btnReset.dataset.confirm='true';
-        setTimeout(()=>{ btnReset.textContent="🔁 Resetovať dáta"; btnReset.dataset.confirm='false'; }, 3000);
-      }
-    };
+   /* ---------- Reset (len denné dáta, doplnky a časy ostávajú) ---------- */
+btnReset.onclick = ()=>{
+  if(btnReset.dataset.confirm==='true'){
+    // Vymaže len denné zaškrtnutia + progress
+    localStorage.removeItem('history');
+    location.reload();
+  } else {
+    btnReset.textContent = "KLIKNI ZNOVA – resetuje LEN dnešné dáta!";
+    btnReset.dataset.confirm = 'true';
+    setTimeout(()=>{
+      btnReset.textContent = "🔁 Resetovať dáta";
+      btnReset.dataset.confirm = 'false';
+    }, 3000);
+  }
+};
+
 
     /* ---------- Progress + chips ---------- */
     function renderProgress(){
@@ -589,4 +594,5 @@
   </script>
 </body>
 </html>
+
 
