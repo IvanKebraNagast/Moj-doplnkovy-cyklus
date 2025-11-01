@@ -195,19 +195,36 @@
     const readLS  = (k,d)=>{ try{ return JSON.parse(localStorage.getItem(k)) ?? d }catch{ return d } };
     const writeLS = (k,v)=> localStorage.setItem(k, JSON.stringify(v));
 
- // ✅ Načítanie doplnkov s MERGE logikou – JSON slúži len ako default
+// 🔄 Načítanie doplnkov zo servera + MERGE s localStorage
 async function loadSupplements() {
-  const fromLS = readLS('supplements', null);
+  const lsData = readLS('supplements', []); // dáta z localStorage
+  let serverData = [];
 
   try {
-    const res = await fetch('./doplnky.json?ver=' + Date.now(), { cache: 'no-store' });
-    const defaults = await res.json();
+    const res = await fetch('./doplnky.json?cacheBust=' + Date.now());
+    serverData = await res.json();
+  } catch (err) {
+    console.warn("⚠️ doplnky.json nedostupný, používam iba localStorage");
+    return lsData;
+  }
 
-    // 1) Prvé spustenie: ak nič v LS, ulož defaults a používaj ich
-    if (!fromLS || !Array.isArray(fromLS) || fromLS.length === 0) {
-      writeLS('supplements', defaults);
-      return defaults;
+  // 🔁 zlúčenie serverových a lokálnych doplnkov (bez duplikátov)
+  const merged = [...serverData];
+
+  lsData.forEach(item => {
+    if (!merged.some(s => s.name === item.name)) {
+      merged.push(item); // doplnok existuje len v LS → pridaj
     }
+  });
+
+  // 🔥 ak sa niečo zmenilo, uložíme do LS
+  if (JSON.stringify(merged) !== JSON.stringify(lsData)) {
+    writeLS('supplements', merged);
+  }
+
+  return merged;
+}
+
 
     // 2) Už máš vlastné dáta → MERGE (tvoje doplnky ostanú, nič sa neprepisuje)
     const byName = Object.fromEntries(defaults.map(s => [s.name, s]));
@@ -603,6 +620,7 @@ btnReset.onclick = ()=>{
   </script>
 </body>
 </html>
+
 
 
 
