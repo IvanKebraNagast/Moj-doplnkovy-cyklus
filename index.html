@@ -196,41 +196,22 @@
     const readLS  = (k,d)=>{ try{ return JSON.parse(localStorage.getItem(k)) ?? d }catch{ return d } };
     const writeLS = (k,v)=> localStorage.setItem(k, JSON.stringify(v));
 
-    // Preddefinované doplnky
-    const defaultSupplements = [
-      { name:"Ecdysterone", doseQuantity:"1 kapsula", doseContext:"po raňajkách",
-        plan:{days:["Po","Ut","St","Št","Pi","So","Ne"], times:["08:30"]},
-        cycleConfig:{durationWeeks:12, pauseWeeks:4} },
+  // 🔄 Načítanie doplnkov z doplnky.json alebo z localStorage
+async function loadSupplements() {
+  const cached = readLS('supplements', null);
+  try {
+    const res = await fetch('./doplnky.json?cacheBust=' + Date.now());
+    const json = await res.json();
+    writeLS('supplements', json);
+    return json;
+  } catch (err) {
+    console.warn("⚠️ JSON nedostupný, používam cache", err);
+    return cached || [];
+  }
+}
 
-      { name:"Kreatín", doseQuantity:"3 kapsuly", doseContext:"po raňajkách, alebo pred tréningom",
-        plan:{days:["Po","Ut","St","Št","Pi","So","Ne"], times:["08:30"]},
-        cycleConfig:{durationWeeks:10, pauseWeeks:4} },
-
-      { name:"L-Lysine", doseQuantity:"1 tabletka", doseContext:"pred raňajkami",
-        plan:{days:["Po","Ut","St","Št","Pi","So","Ne"], times:["08:00"]},
-        cycleConfig:{durationWeeks:0, pauseWeeks:0} },
-
-      { name:"NMN", doseQuantity:"1 kapsula", doseContext:"pred raňajkami",
-        plan:{days:["Po","Ut","St","Št","Pi"], times:["08:00"]},
-        cycleConfig:{durationWeeks:0, pauseWeeks:0} }, // víkend pauza sa rieši logikou
-
-      { name:"Ashwagandha", doseQuantity:"1 kapsula", doseContext:"po raňajkách, 1 kapsula hodinu pred spaním",
-        plan:{days:["Po","Ut","St","Št","Pi","So","Ne"], times:["08:30","20:30"]},
-        cycleConfig:{durationWeeks:0, pauseWeeks:0} },
-
-      { name:"Moringa", doseQuantity:"3 kapsuly", doseContext:"po raňajkách",
-        plan:{days:["Po","Ut","St","Št","Pi","So","Ne"], times:["08:30"]},
-        cycleConfig:{durationWeeks:0, pauseWeeks:0} },
-
-      { name:"Omega-3", doseQuantity:"1 kapsula", doseContext:"po raňajkách",
-        plan:{days:["Po","Ut","St","Št","Pi","So","Ne"], times:["08:30"]},
-        cycleConfig:{durationWeeks:0, pauseWeeks:0} },
-
-      { name:"Move Free Joint Health", doseQuantity:"1 kapsula",
-        doseContext:"po raňajkách, 1 kapsula po obede, 1 kapsula hodinu pred spaním",
-        plan:{days:["Po","Ut","St","Št","Pi","So","Ne"], times:["08:30","14:00","20:30"]},
-        cycleConfig:{durationWeeks:0, pauseWeeks:0} }
-    ];
+let supplements = [];
+let history = readLS('history', {});
 
     let supplements = readLS('supplements', defaultSupplements);
     let history     = readLS('history', {});
@@ -594,5 +575,6 @@ btnReset.onclick = ()=>{
   </script>
 </body>
 </html>
+
 
 
