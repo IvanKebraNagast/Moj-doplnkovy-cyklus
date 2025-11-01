@@ -1,5 +1,5 @@
 // sw.js – verzia s anti-cache pre HTML
-const CACHE_VERSION = "v12"; // zvyš číslo pri update
+const CACHE_VERSION = "v13"; // zvyš číslo pri update
 const STATIC_CACHE = `doplnkovy-cyklus-${CACHE_VERSION}`;
 
 const STATIC_FILES = [
