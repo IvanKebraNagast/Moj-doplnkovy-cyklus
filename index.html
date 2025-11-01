@@ -567,14 +567,18 @@ btnReset.onclick = ()=>{
       if(fromPlanSave) scheduleTodayNotifications();
     }
 
-    window.addEventListener('load', ()=>{
-      renderAll();
-      if(typeof Notification!=='undefined' && Notification.permission==='granted') scheduleTodayNotifications();
-      registerServiceWorker();
-    });
+   window.addEventListener('load', async ()=>{
+  supplements = await loadSupplements();
+  renderAll();
+  if(typeof Notification!=='undefined' && Notification.permission==='granted')
+    scheduleTodayNotifications();
+  registerServiceWorker();
+});
+
   </script>
 </body>
 </html>
+
 
 
 
