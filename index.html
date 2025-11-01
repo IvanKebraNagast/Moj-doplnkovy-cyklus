@@ -213,17 +213,11 @@ async function loadSupplements() {
 let supplements = [];
 let history = readLS('history', {});
 
-    let supplements = readLS('supplements', defaultSupplements);
-    let history     = readLS('history', {});
-
-    // Inicializácia (doplnenie startDate a cycleConfig)
+// Inicializácia (doplnenie startDate a cycleConfig)
     function initializeSupplements(){
       supplements.forEach(s=>{
         if(!s.startDate) s.startDate = todayISO();
-        if(!s.cycleConfig || s.cycleConfig.durationWeeks===undefined){
-          const def = defaultSupplements.find(d=>d.name===s.name);
-          s.cycleConfig = def?.cycleConfig || {durationWeeks:0, pauseWeeks:0};
-        }
+        
       });
       writeLS('supplements', supplements);
     }
@@ -578,6 +572,7 @@ btnReset.onclick = ()=>{
   </script>
 </body>
 </html>
+
 
 
 
