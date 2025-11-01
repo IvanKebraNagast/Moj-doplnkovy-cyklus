@@ -195,19 +195,51 @@
     const readLS  = (k,d)=>{ try{ return JSON.parse(localStorage.getItem(k)) ?? d }catch{ return d } };
     const writeLS = (k,v)=> localStorage.setItem(k, JSON.stringify(v));
 
-  // 🔄 Načítanie doplnkov z doplnky.json alebo z localStorage
+ // ✅ Načítanie doplnkov s MERGE logikou – JSON slúži len ako default
 async function loadSupplements() {
-  const cached = readLS('supplements', null);
+  const fromLS = readLS('supplements', null);
+
   try {
-    const res = await fetch('./doplnky.json?cacheBust=' + Date.now());
-    const json = await res.json();
-    writeLS('supplements', json);
-    return json;
+    const res = await fetch('./doplnky.json?ver=' + Date.now(), { cache: 'no-store' });
+    const defaults = await res.json();
+
+    // 1) Prvé spustenie: ak nič v LS, ulož defaults a používaj ich
+    if (!fromLS || !Array.isArray(fromLS) || fromLS.length === 0) {
+      writeLS('supplements', defaults);
+      return defaults;
+    }
+
+    // 2) Už máš vlastné dáta → MERGE (tvoje doplnky ostanú, nič sa neprepisuje)
+    const byName = Object.fromEntries(defaults.map(s => [s.name, s]));
+
+    const merged = fromLS.map(s => {
+      const base = byName[s.name] || {};
+      return {
+        name: s.name ?? base.name,
+        doseQuantity: s.doseQuantity ?? base.doseQuantity ?? "1 ks",
+        doseContext: s.doseContext ?? base.doseContext ?? "ráno",
+        plan: {
+          days: (s.plan?.days?.length ? s.plan.days : (base.plan?.days ?? ["Po","Ut","St","Št","Pi","So","Ne"])),
+          times: (s.plan?.times?.length ? s.plan.times : (base.plan?.times ?? ["08:30"]))
+        },
+        startDate: s.startDate ?? todayISO(),
+        cycleConfig: s.cycleConfig ?? base.cycleConfig ?? { durationWeeks: 0, pauseWeeks: 0 }
+      };
+    });
+
+    // 3) Pridáme nové default doplnky z JSON-u, ktoré ešte nemáš
+    const newDefaults = defaults.filter(d => !fromLS.some(s => s.name === d.name));
+    const final = merged.concat(newDefaults);
+
+    writeLS('supplements', final);
+    return final;
+
   } catch (err) {
-    console.warn("⚠️ JSON nedostupný, používam cache", err);
-    return cached || [];
+    console.warn("⚠️ doplnky.json nedostupný, používam tvoje uložené dáta", err);
+    return fromLS || [];
   }
 }
+
 
 let supplements = [];
 let history = readLS('history', {});
@@ -571,6 +603,7 @@ btnReset.onclick = ()=>{
   </script>
 </body>
 </html>
+
 
 
 
