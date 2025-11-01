@@ -1,0 +1,66 @@
+[
+  {
+    "name": "Ecdysterone",
+    "doseQuantity": "1 kapsula",
+    "doseContext": "po raňajkách",
+    "plan": { "days": ["Po","Ut","St","Št","Pi","So","Ne"], "times": ["08:30"] },
+    "cycleConfig": { "durationWeeks": 12, "pauseWeeks": 4 },
+    "startDate": ""
+  },
+  {
+    "name": "Kreatín",
+    "doseQuantity": "3 kapsuly",
+    "doseContext": "po raňajkách, alebo pred tréningom",
+    "plan": { "days": ["Po","Ut","St","Št","Pi","So","Ne"], "times": ["08:30"] },
+    "cycleConfig": { "durationWeeks": 10, "pauseWeeks": 4 },
+    "startDate": ""
+  },
+  {
+    "name": "L-Lysine",
+    "doseQuantity": "1 tabletka",
+    "doseContext": "pred raňajkami",
+    "plan": { "days": ["Po","Ut","St","Št","Pi","So","Ne"], "times": ["08:00"] },
+    "cycleConfig": { "durationWeeks": 0, "pauseWeeks": 0 },
+    "startDate": ""
+  },
+  {
+    "name": "NMN",
+    "doseQuantity": "1 kapsula",
+    "doseContext": "pred raňajkami",
+    "plan": { "days": ["Po","Ut","St","Št","Pi"], "times": ["08:00"] },
+    "cycleConfig": { "durationWeeks": 0, "pauseWeeks": 0 },
+    "startDate": ""
+  },
+  {
+    "name": "Ashwagandha",
+    "doseQuantity": "1 kapsula po raňajkách, 1 kapsula hodinu pred spaním",
+    "doseContext": "",
+    "plan": { "days": ["Po","Ut","St","Št","Pi","So","Ne"], "times": ["08:30","20:30"] },
+    "cycleConfig": { "durationWeeks": 0, "pauseWeeks": 0 },
+    "startDate": ""
+  },
+  {
+    "name": "Moringa",
+    "doseQuantity": "3 kapsuly",
+    "doseContext": "po raňajkách",
+    "plan": { "days": ["Po","Ut","St","Št","Pi","So","Ne"], "times": ["08:30"] },
+    "cycleConfig": { "durationWeeks": 0, "pauseWeeks": 0 },
+    "startDate": ""
+  },
+  {
+    "name": "Omega-3",
+    "doseQuantity": "1 kapsula",
+    "doseContext": "po raňajkách",
+    "plan": { "days": ["Po","Ut","St","Št","Pi","So","Ne"], "times": ["08:30"] },
+    "cycleConfig": { "durationWeeks": 0, "pauseWeeks": 0 },
+    "startDate": ""
+  },
+  {
+    "name": "Move Free Joint Health",
+    "doseQuantity": "1 kapsula po raňajkách, 1 kapsula po obede, 1 kapsula hodinu pred spaním",
+    "doseContext": "",
+    "plan": { "days": ["Po","Ut","St","Št","Pi","So","Ne"], "times": ["08:30","14:00","20:30"] },
+    "cycleConfig": { "durationWeeks": 0, "pauseWeeks": 0 },
+    "startDate": ""
+  }
+]
