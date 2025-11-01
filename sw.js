@@ -1,21 +1,22 @@
-// sw.js – verzia s anti-cache pre HTML
-const CACHE_VERSION = "v13"; // zvyš číslo pri update
+// sw.js – full control cache version
+const CACHE_VERSION = "v14"; // zvýš vždy pri update
 const STATIC_CACHE = `doplnkovy-cyklus-${CACHE_VERSION}`;
 
 const STATIC_FILES = [
   "./cyklus.png",
-  "./manifest.webmanifest"
+  "./manifest.webmanifest",
+  "./apple-touch-icon.png"
 ];
 
-// Install (uloží len statické súbory, NIE index.html)
+// INSTALL – uloží len statické assety, NIE index.html, NIE doplnky.json
 self.addEventListener("install", (event) => {
-  self.skipWaiting();
   event.waitUntil(
     caches.open(STATIC_CACHE).then((cache) => cache.addAll(STATIC_FILES))
   );
+  self.skipWaiting();
 });
 
-// Activate (zmaže staré cache)
+// ACTIVATE – odstráni staré cache
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
@@ -25,19 +26,17 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
-// Fetch logic:
-// ✅ HTML, JS, CSS = vždy z webu (čerstvé)
-// ✅ obrázky, ikony = z cache alebo fallback na web
+// FETCH LOGIC
 self.addEventListener("fetch", (event) => {
   const req = event.request;
+  const url = req.url;
 
-  // HTML/JS/CSS -> no cache, always latest
-  if (req.mode === "navigate" || req.headers.get("accept")?.includes("text/html")) {
-    return event.respondWith(fetch(req));
+  // 1️⃣ doplnky.json → vždy ONLINE, nikdy nekeszovať
+  if (url.endsWith("doplnky.json")) {
+    return event.respondWith(
+      fetch(req, { cache: "no-store" }).catch(() => caches.match(req))
+    );
   }
 
-  // Assety → cache-first
-  event.respondWith(
-    caches.match(req).then((cached) => cached || fetch(req))
-  );
-});
+  // 2️⃣ HTML → vždy online + force refresh (iOS fix)
+  if (req.mode === "navigate" || req.headers.get("accept"
