@@ -20,6 +20,7 @@
 
   <style>
     :root { --card-r: 18px; }
+    /* Základ */
     body{
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial;
       background: radial-gradient(circle at 50% 0%, #ffffff 0%, #dbeafe 35%, #cbd5e1 100%);
@@ -33,12 +34,14 @@
       box-shadow:0 8px 25px rgba(0,0,0,.15), inset 0 1px 2px rgba(255,255,255,.6);
       padding:22px;
     }
+    /* Rámik autora */
     .author-box{
       background: linear-gradient(90deg,#6366f1 0%,#3b82f6 100%);
       color:#fff; font-weight:800; text-align:center;
       border-radius:14px; padding:8px 12px; margin-bottom:14px;
       box-shadow:0 4px 10px rgba(0,0,0,.25); letter-spacing:.3px;
     }
+    /* Karty doplnkov */
     .supplement-card{
       position:relative; border-radius:20px; padding:16px 18px; margin-bottom:14px;
       display:flex; justify-content:space-between; align-items:center; overflow:hidden;
@@ -61,6 +64,7 @@
     .supplement-card.pause:hover{ transform:none; }
     .pause-message{ color:#fff; font-weight:700; font-size:.9rem; padding-left:10px; text-align:right; }
 
+    /* Svetelný preliv */
     .supplement-card::before{
       content:""; position:absolute; inset:0;
       background:linear-gradient(120deg, rgba(255,255,255,.8) 0%, transparent 40%, transparent 60%, rgba(255,255,255,.25) 100%);
@@ -84,9 +88,11 @@
     .right .icon{ font-size:20px; color:#fff; opacity:.9; text-shadow:0 2px 3px rgba(0,0,0,.6); transition: transform .2s ease; }
     .right .icon:hover{ transform:scale(1.2); opacity:1; }
 
+    /* Pills pre denný prehľad */
     .pill.dosage{ color:#034b28; background:linear-gradient(180deg,#caffdd 0%,#9bf2bf 60%,#5ddf96 100%); }
     .pill.time{   color:#5f0b0b; background:linear-gradient(180deg,#ffe0e0 0%,#ffc5c5 60%,#ffaaaa 100%); }
 
+    /* Dni v týždni */
     .day-cell-compact{ cursor:default; box-shadow:0 1px 3px rgba(0,0,0,.1); }
     .day-cell-compact.bg-indigo-600{ background-color:#4f46e5; color:#fff; font-weight:800; transform:scale(1.02); box-shadow:0 4px 6px rgba(0,0,0,.2); }
   </style>
@@ -98,6 +104,7 @@
   <h1 class="text-2xl font-extrabold mb-3 text-center">💊 Môj doplnkový cyklus</h1>
 
   <div class="app">
+    <!-- Rámik autora nad zoznamom -->
     <div class="author-box">🌟 Vytvoril Ivan Kebra Nagast 🌟</div>
 
     <!-- Zoznam doplnkov -->
@@ -148,7 +155,7 @@
           <div id="dayChecks" class="grid grid-cols-7 gap-2 text-sm"></div>
         </div>
 
-        <!-- Cyklovanie – len na čítanie (ukáže sa, ak je nastavené) -->
+        <!-- Cyklovanie – len na čítanie (zobrazí sa, ak je nastavené) -->
         <div id="cycleConfigFields" class="border p-3 rounded-lg bg-gray-50 hidden">
           <h3 class="font-semibold mb-2 text-indigo-700">🔄 Cyklovanie (nastavené)</h3>
           <div class="flex gap-2">
@@ -188,10 +195,11 @@
     const readLS  = (k,d)=>{ try{ return JSON.parse(localStorage.getItem(k)) ?? d }catch{ return d } };
     const writeLS = (k,v)=> localStorage.setItem(k, JSON.stringify(v));
 
-    // 🔄 Načítanie doplnkov zo servera + MERGE s localStorage
+    // 🔄 Načítanie doplnkov: LS má prioritu, server doplní chýbajúce (aby sa zmazané nevracali)
     async function loadSupplements() {
-      const lsData = readLS('supplements', []); // dáta z localStorage
+      const lsData = readLS('supplements', []);   // lokálne
       let serverData = [];
+
       try {
         const res = await fetch('./doplnky.json?cacheBust=' + Date.now(), { cache: 'no-store' });
         serverData = await res.json();
@@ -200,13 +208,16 @@
         return lsData;
       }
 
-      // zlúčenie serverových a lokálnych doplnkov (bez duplikátov podľa názvu)
-      const merged = [...serverData];
-      lsData.forEach(item => {
-        if (!merged.some(s => s.name === item.name)) merged.push(item);
+      // Merge: základ LS, doplníme iba tie zo servera, ktoré v LS nie sú
+      const byName = (arr) => Object.fromEntries(arr.map(s => [s.name, s]));
+      const base = byName(lsData);
+      const merged = [...lsData];
+
+      serverData.forEach(item => {
+        if (!base[item.name]) merged.push(item);
       });
 
-      // ak sa niečo zmenilo, uložíme do LS
+      // Ulož späť, ak sa niečo zmenilo
       if (JSON.stringify(merged) !== JSON.stringify(lsData)) {
         writeLS('supplements', merged);
       }
@@ -229,6 +240,8 @@
     /* ---------- Cycle Logic ---------- */
     function getCycleStatus(supp){
       const dow = new Date().getDay(); // 0=Ne … 6=So
+
+      // NMN - víkend pauza (sobota/nedeľa), aj keď je v pláne
       if(supp.name==="NMN" && (dow===0 || dow===6)){
         return {status:'PAUSE', message:'Víkendová pauza. Užívanie sa obnoví v pondelok.'};
       }
@@ -510,7 +523,6 @@
     }
 
     /* ---------- Notifikácie ---------- */
-    const btnNotif = document.getElementById('enableNotifs');
     btnNotif.onclick = async ()=>{
       try{
         const perm = await Notification.requestPermission();
