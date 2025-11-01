@@ -1,7 +1,8 @@
 {
   "name": "Môj doplnkový cyklus 💊",
   "short_name": "Doplnky",
-  "start_url": "./index.html?app=v13",
+  "start_url": "./"start_url": "./app.html?app=v13",
+",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#3b82f6",
