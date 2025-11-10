@@ -1,61 +1,51 @@
 <!DOCTYPE html>
 <html lang="sk">
 <head>
-  
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Môj doplnkový cyklus 💊</title>
-  
 
-    <!-- ⚡ PWA a Firebase konfigurácia -->
-    <link rel="manifest" href="./manifest.webmanifest">
-    <link rel="apple-touch-icon" href="./anti-aging.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Môj doplnkový cyklus">
-    <meta name="theme-color" content="#ffffff">
+  <!-- ⚡ PWA a Firebase konfigurácia -->
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./anti-aging.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Môj doplnkový cyklus">
+  <meta name="theme-color" content="#ffffff">
 
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-analytics.js";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-analytics.js";
 
-      const firebaseConfig = {
-        apiKey: "AIzaSyAfs4NluHtDInHgmD22DHYDLt6ypl008DU",
-        authDomain: "citanie-sv.firebaseapp.com",
-        projectId: "citanie-sv",
-        storageBucket: "citanie-sv.firebasestorage.app",
-        messagingSenderId: "16378682541",
-        appId: "1:16378682541:web:1d68b51e2f56dc75657a24",
-        measurementId: "G-NNT3Z8FPYG"
-      };
+    // Táto konfigurácia je len pre Analytics, ktorý bol v pôvodnom súbore
+    const firebaseConfigAnalytics = {
+      apiKey: "AIzaSyAfs4NluHtDInHgmD22DHYDLt6ypl008DU",
+      authDomain: "citanie-sv.firebaseapp.com",
+      projectId: "citanie-sv",
+      storageBucket: "citanie-sv.firebasestorage.app",
+      messagingSenderId: "16378682541",
+      appId: "1:16378682541:web:1d68b51e2f56dc75657a24",
+      measurementId: "G-NNT3Z8FPYG"
+    };
 
-      const app = initializeApp(firebaseConfig);
-      const analytics = getAnalytics(app);
-    </script>
+    const app = initializeApp(firebaseConfigAnalytics, "analyticsApp"); // Dávame mu meno, aby sa nebilo
+    const analytics = getAnalytics(app);
+  </script>
 
-    <!-- ⚙️ Ostatné CSS, Tailwind atď -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
-  </head>
+  <!-- ⚙️ Ostatné CSS, Tailwind atď -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
 
-  <body>
-    <!-- tvoj obsah tu -->
-  </body>
-</html>
-
-  <!-- Ikony / PWA -->
+  <!-- Ikony / PWA (presunuté z konca súboru) -->
   <link rel="apple-touch-icon" href="./cyklus.png?v=6">
   <link rel="apple-touch-icon" sizes="180x180" href="./cyklus.png?v=6">
   <link rel="apple-touch-icon" sizes="512x512" href="./cyklus.png?v=6">
-  <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" type="image/png" href="./cyklus.png?v=6">
   <meta property="og:image" content="./cyklus.png?v=6">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Doplnkový cyklus">
 
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
+  <!-- Štýly (presunuté z konca súboru) -->
   <style>
     :root { --card-r: 18px; }
     /* Základ */
@@ -223,7 +213,7 @@
     </div>
   </div>
 
-  <script>
+  <script type="module">
     /* ---------- helpers ---------- */
     const $  = (s)=>document.querySelector(s);
     const $$ = (s)=>[...document.querySelectorAll(s)];
@@ -233,9 +223,30 @@
     const readLS  = (k,d)=>{ try{ return JSON.parse(localStorage.getItem(k)) ?? d }catch{ return d } };
     const writeLS = (k,v)=> localStorage.setItem(k, JSON.stringify(v));
 
+    // --- FIREBASE IMPORTY --- (KROK 2)
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    // --- FIREBASE KONFIGURÁCIA --- (KROK 2)
+    const firebaseConfig = {
+      apiKey: "AIzaSyAfs4NluHtDInHgmD22DHYDLt6ypl008DU",
+      authDomain: "citanie-sv.firebaseapp.com",
+      projectId: "citanie-sv",
+      storageBucket: "citanie-sv.appspot.com",
+      messagingSenderId: "16378682541",
+      appId: "1:16378682541:web:be64c5a5fff65055657a24"
+    };
+    // --- INITIALIZÁCIA --- (KROK 2)
+    const app = initializeApp(firebaseConfig); // Názov "mainApp" odstránený, preberá predvolený
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    let userId;
+    const docRef = doc(db, "doplnkovy-cyklus", "data"); // Nová cesta z KROK 2
+
+
     // 🔄 Načítanie doplnkov: LS má prioritu, server doplní chýbajúce (aby sa zmazané nevracali)
     async function loadSupplements() {
-      const lsData = readLS('supplements', []);   // lokálne
+      const lsData = readLS('supplements', []);    // lokálne
       let serverData = [];
 
       try {
@@ -257,22 +268,28 @@
 
       // Ulož späť, ak sa niečo zmenilo
       if (JSON.stringify(merged) !== JSON.stringify(lsData)) {
-        writeLS('supplements', merged);
+        // writeLS('supplements', merged); // Už neukladáme tu, necháme to na firebase logike
       }
       return merged;
     }
 
-    let supplements = [];
-    let history = readLS('history', {});
+    let supplements = []; // Načítame z LS/Firebase pri štarte
+    let history = readLS('history', {}); // Začíname s LS, Firebase prepíše
 
     // Inicializácia (doplní chýbajúce polia)
     function initializeSupplements(){
+      let changed = false;
       supplements.forEach(s=>{
-        if(!s.startDate) s.startDate = todayISO();
-        if(!s.plan) s.plan = { days:["Po","Ut","St","Št","Pi","So","Ne"], times:["08:30"] };
-        if(!s.cycleConfig) s.cycleConfig = { durationWeeks:0, pauseWeeks:0 };
+        if(!s.startDate) { s.startDate = todayISO(); changed = true; }
+        if(!s.plan) { s.plan = { days:["Po","Ut","St","Št","Pi","So","Ne"], times:["08:30"] }; changed = true; }
+        if(!s.cycleConfig) { s.cycleConfig = { durationWeeks:0, pauseWeeks:0 }; changed = true; }
       });
-      writeLS('supplements', supplements);
+
+      if(changed){
+        writeLS('supplements', supplements);
+        // Krok 4: Uloženie do Firebase
+        setDoc(docRef, { supplements, history }, { merge: true }).catch(console.warn);
+      }
     }
 
     /* ---------- Cycle Logic ---------- */
@@ -288,12 +305,12 @@
       }
 
       const start = new Date(supp.startDate);
-      const now   = new Date();
+      const now    = new Date();
       const diffDays = Math.ceil(Math.abs(now-start)/(1000*60*60*24));
 
       const daysInCycle = supp.cycleConfig.durationWeeks*7;
       const daysInPause = supp.cycleConfig.pauseWeeks*7;
-      const total       = daysInCycle + daysInPause;
+      const total         = daysInCycle + daysInPause;
 
       const into = diffDays % total;
 
@@ -400,6 +417,8 @@
         delBtn.onclick = ()=>{
           supplements.splice(i,1);
           writeLS('supplements', supplements);
+          // Krok 4.1: Uloženie do Firebase
+          setDoc(docRef, { supplements, history }, { merge: true }).catch(console.warn);
           renderAll();
         };
         right.appendChild(delBtn);
@@ -416,6 +435,8 @@
           if(!history[todayISO()][n]) history[todayISO()][n] = {};
           history[todayISO()][n][t] = e.target.checked;
           writeLS('history', history);
+          // Krok 4.2: Uloženie do Firebase
+          setDoc(docRef, { supplements, history }, { merge: true }).catch(console.warn);
           renderAll(false);
         });
       });
@@ -454,7 +475,7 @@
       const w = document.createElement('div');
       w.className = "flex items-center gap-2";
       w.innerHTML = `<input type="time" value="${value}" class="time-input border rounded-lg px-3 py-1 flex-1">
-                     <button class="px-2 py-1 rounded-lg border border-gray-300 text-red-500 hover:bg-red-50 remove-time">✖</button>`;
+                       <button class="px-2 py-1 rounded-lg border border-gray-300 text-red-500 hover:bg-red-50 remove-time">✖</button>`;
       timeList.appendChild(w);
       w.querySelector('.remove-time').onclick = ()=> w.remove();
     }
@@ -466,6 +487,8 @@
       const timesSel = [...timeList.querySelectorAll('.time-input')].map(i=>i.value).filter(Boolean).sort();
       supplements[editingIndex].plan = { days: daysSel, times: (timesSel.length?timesSel:["08:30"]) };
       writeLS('supplements', supplements);
+      // Krok 4.3: Uloženie do Firebase
+      setDoc(docRef, { supplements, history }, { merge: true }).catch(console.warn);
       planModal.classList.add('hidden');
       renderAll(true);
     };
@@ -492,14 +515,20 @@
       document.getElementById('newContext').value = "";
 
       writeLS('supplements', supplements);
-      openPlan(newIndex);
-      renderAll();
+      // Krok 4 (doplnené): Uloženie do Firebase
+      setDoc(docRef, { supplements, history }, { merge: true }).catch(console.warn);
+
+      openPlan(newIndex); // Otvoríme plánovač pre nový doplnok
+      renderAll(); // Zatiaľ nerendrujeme, až po uložení plánu
     };
 
     /* ---------- Reset (len denné dáta, doplnky a časy ostávajú) ---------- */
     btnReset.onclick = ()=>{
       if(btnReset.dataset.confirm==='true'){
         localStorage.removeItem('history');
+        history = {}; // Vyčistiť v pamäti
+        // Vyčistiť aj na Firebase
+        setDoc(docRef, { supplements, history }, { merge: true }).catch(console.warn);
         location.reload();
       } else {
         btnReset.textContent = "KLIKNI ZNOVA – resetuje LEN dnešné dáta!";
@@ -602,21 +631,70 @@
 
     /* ---------- Render all ---------- */
     function renderAll(fromPlanSave=false){
-      initializeSupplements();
+      initializeSupplements(); // Toto teraz zahŕňa aj sync, ak sa niečo zmenilo
       renderSupplements();
       renderDayDisplay();
       renderProgress();
       if(fromPlanSave) scheduleTodayNotifications();
     }
 
+    /* ---------- 🔥 ŠTART APLIKÁCIE S FIREBASE ---------- */
     window.addEventListener('load', async ()=>{
-      supplements = await loadSupplements();
+      
+      // 🔥 Firebase anonymné prihlásenie (KROK 3)
+      try {
+        await signInAnonymously(auth);
+        userId = auth.currentUser?.uid || "anon";
+        console.log("Prihlásený ako:", userId);
+      } catch (e) {
+        console.warn("Nepodarilo sa prihlásiť anonymne:", e);
+      }
+      
+      // 🔄 Pokus o načítanie dát z Firebase (KROK 3)
+      try {
+        const snap = await getDoc(docRef);
+        if (snap.exists()) {
+          const data = snap.data();
+          supplements = data.supplements || [];
+          history = data.history || {};
+          writeLS('supplements', supplements);
+          writeLS('history', history);
+          console.log("☁️ Dáta načítané z Firebase");
+        } else {
+          // Fallback na lokálne dáta, ak na serveri nič nie je
+          supplements = await loadSupplements(); 
+          history = readLS('history', {});
+          console.log("🆕 Prvý štart — ukladám lokálne dáta na Firebase");
+          await setDoc(docRef, { supplements, history });
+        }
+
+        // 🛰️ Real-time listener – sleduje zmeny v pozadí (KROK 3)
+        onSnapshot(docRef, (snap) => {
+          if (snap.exists()) {
+            const d = snap.data();
+            if (JSON.stringify(d.supplements) !== JSON.stringify(supplements)) {
+              supplements = d.supplements; writeLS('supplements', supplements); renderAll();
+            }
+            if (JSON.stringify(d.history) !== JSON.stringify(history)) {
+              history = d.history; writeLS('history', history); renderAll();
+            }
+          }
+        });
+      } catch (e) {
+        console.warn("⚠️ Firebase sync error:", e);
+        // Fallback na pôvodnú logiku, ak Firebase zlyhá
+        supplements = await loadSupplements();
+        history = readLS('history', {});
+      }
+      
+      // Prvé renderovanie a zvyšok
       renderAll();
+      
       if(typeof Notification!=='undefined' && Notification.permission==='granted')
         scheduleTodayNotifications();
+        
       registerServiceWorker();
     });
   </script>
 </body>
 </html>
-
