@@ -5,52 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Môj doplnkový cyklus 💊</title>
 
-  <!-- ⚡ PWA a Firebase konfigurácia -->
+  <!-- ✅ PWA a Firebase konfigurácia -->
   <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="apple-touch-icon" href="./anti-aging.png">
+  <link rel="apple-touch-icon" href="./cyklus.png?v=6">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Môj doplnkový cyklus">
   <meta name="theme-color" content="#ffffff">
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-analytics.js";
-
-    // Táto konfigurácia je len pre Analytics, ktorý bol v pôvodnom súbore
-    const firebaseConfigAnalytics = {
-      apiKey: "AIzaSyAfs4NluHtDInHgmD22DHYDLt6ypl008DU",
-      authDomain: "citanie-sv.firebaseapp.com",
-      projectId: "citanie-sv",
-      storageBucket: "citanie-sv.firebasestorage.app",
-      messagingSenderId: "16378682541",
-      appId: "1:16378682541:web:1d68b51e2f56dc75657a24",
-      measurementId: "G-NNT3Z8FPYG"
-    };
-
-    const app = initializeApp(firebaseConfigAnalytics, "analyticsApp"); // Dávame mu meno, aby sa nebilo
-    const analytics = getAnalytics(app);
-  </script>
-
-  <!-- ⚙️ Ostatné CSS, Tailwind atď -->
+  <!-- ✅ Tailwind najprv -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet"/>
 
-  <!-- Ikony / PWA (presunuté z konca súboru) -->
-  <link rel="apple-touch-icon" href="./cyklus.png?v=6">
-  <link rel="apple-touch-icon" sizes="180x180" href="./cyklus.png?v=6">
-  <link rel="apple-touch-icon" sizes="512x512" href="./cyklus.png?v=6">
-  <link rel="icon" type="image/png" href="./cyklus.png?v=6">
-  <meta property="og:image" content="./cyklus.png?v=6">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="Doplnkový cyklus">
-
-  <!-- Štýly (presunuté z konca súboru) -->
+  <!-- ✅ Potom tvoje štýly (pôvodný vzhľad zachovaný) -->
   <style>
     :root { --card-r: 18px; }
-    /* Základ */
     body{
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial;
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial;
       background: radial-gradient(circle at 50% 0%, #ffffff 0%, #dbeafe 35%, #cbd5e1 100%);
       color:#111827; overflow-x:hidden;
     }
@@ -62,14 +33,12 @@
       box-shadow:0 8px 25px rgba(0,0,0,.15), inset 0 1px 2px rgba(255,255,255,.6);
       padding:22px;
     }
-    /* Rámik autora */
     .author-box{
       background: linear-gradient(90deg,#6366f1 0%,#3b82f6 100%);
       color:#fff; font-weight:800; text-align:center;
       border-radius:14px; padding:8px 12px; margin-bottom:14px;
       box-shadow:0 4px 10px rgba(0,0,0,.25); letter-spacing:.3px;
     }
-    /* Karty doplnkov */
     .supplement-card{
       position:relative; border-radius:20px; padding:16px 18px; margin-bottom:14px;
       display:flex; justify-content:space-between; align-items:center; overflow:hidden;
@@ -92,7 +61,6 @@
     .supplement-card.pause:hover{ transform:none; }
     .pause-message{ color:#fff; font-weight:700; font-size:.9rem; padding-left:10px; text-align:right; }
 
-    /* Svetelný preliv */
     .supplement-card::before{
       content:""; position:absolute; inset:0;
       background:linear-gradient(120deg, rgba(255,255,255,.8) 0%, transparent 40%, transparent 60%, rgba(255,255,255,.25) 100%);
@@ -116,29 +84,23 @@
     .right .icon{ font-size:20px; color:#fff; opacity:.9; text-shadow:0 2px 3px rgba(0,0,0,.6); transition: transform .2s ease; }
     .right .icon:hover{ transform:scale(1.2); opacity:1; }
 
-    /* Pills pre denný prehľad */
     .pill.dosage{ color:#034b28; background:linear-gradient(180deg,#caffdd 0%,#9bf2bf 60%,#5ddf96 100%); }
     .pill.time{   color:#5f0b0b; background:linear-gradient(180deg,#ffe0e0 0%,#ffc5c5 60%,#ffaaaa 100%); }
 
-    /* Dni v týždni */
     .day-cell-compact{ cursor:default; box-shadow:0 1px 3px rgba(0,0,0,.1); }
     .day-cell-compact.bg-indigo-600{ background-color:#4f46e5; color:#fff; font-weight:800; transform:scale(1.02); box-shadow:0 4px 6px rgba(0,0,0,.2); }
   </style>
 </head>
+
 <body class="flex flex-col items-center p-4">
 
-  <!-- Hlavička -->
   <img src="./apple-touch-icon.png" alt="Doplnky" class="w-20 h-20 rounded-full shadow-md mb-2">
   <h1 class="text-2xl font-extrabold mb-3 text-center">💊 Môj doplnkový cyklus</h1>
 
   <div class="app">
-    <!-- Rámik autora nad zoznamom -->
     <div class="author-box">🌟 Vytvoril Ivan Kebra Nagast 🌟</div>
-
-    <!-- Zoznam doplnkov -->
     <div id="supplementList" class="mb-4"></div>
 
-    <!-- Pridanie doplnku -->
     <div class="grid gap-2 mb-3">
       <input id="newSupplement" type="text" placeholder="Názov doplnku…" class="border border-gray-300 rounded-lg px-3 py-2">
       <input id="newDose" type="text" placeholder="Dávka (napr. 1 kapsula)" class="border border-gray-300 rounded-lg px-3 py-2">
@@ -146,10 +108,9 @@
       <button id="addSupplement" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700">Pridať</button>
     </div>
 
-    <button id="resetAll" class="w-full bg-red-500 text-white rounded-lg py-2 mt-2 hover:bg-red-600" data-confirm="false">🔁 Resetovať dáta</button>
+    <button id="resetAll" class="w-full bg-red-500 text-white rounded-lg py-2 mt-2 hover:bg-red-600">🔁 Resetovať dáta</button>
     <button id="enableNotifs" class="w-full bg-green-500 text-white rounded-lg py-2 mt-2 hover:bg-green-600">🔔 Povoliť notifikácie</button>
 
-    <!-- Denný status + graf -->
     <div class="bg-white rounded-2xl p-5 mt-4 border">
       <h3 class="text-sm text-gray-600 mb-2 font-semibold">Aktuálny deň:</h3>
       <div id="dayDisplay" class="grid grid-cols-7 gap-1.5 mb-4 text-xs font-semibold text-center"></div>
@@ -173,528 +134,7 @@
     </div>
   </div>
 
-  <!-- MODAL – Plán -->
-  <div id="planModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-2xl p-6 w-96 max-w-full">
-      <h2 id="modalTitle" class="text-lg font-bold mb-4 text-center">🕓 Plán užívania</h2>
-      <div class="space-y-4">
-        <div>
-          <h3 class="font-semibold mb-2">📅 Dni v týždni</h3>
-          <div id="dayChecks" class="grid grid-cols-7 gap-2 text-sm"></div>
-        </div>
-
-        <!-- Cyklovanie – len na čítanie (zobrazí sa, ak je nastavené) -->
-        <div id="cycleConfigFields" class="border p-3 rounded-lg bg-gray-50 hidden">
-          <h3 class="font-semibold mb-2 text-indigo-700">🔄 Cyklovanie (nastavené)</h3>
-          <div class="flex gap-2">
-            <div class="flex-1">
-              <label class="text-xs text-gray-500 block">Dĺžka cyklu (týždne):</label>
-              <input id="cycleDuration" type="number" class="w-full border rounded-lg px-2 py-1" disabled>
-            </div>
-            <div class="flex-1">
-              <label class="text-xs text-gray-500 block">Dĺžka pauzy (týždne):</label>
-              <input id="cyclePause" type="number" class="w-full border rounded-lg px-2 py-1" disabled>
-            </div>
-          </div>
-          <p id="cycleStatusMsg" class="text-sm mt-2 text-red-500 font-medium"></p>
-        </div>
-
-        <div>
-          <h3 class="font-semibold mb-2">⏰ Časy (hh:mm)</h3>
-          <div id="timeList" class="space-y-2"></div>
-          <button id="addTime" class="mt-2 px-3 py-1 rounded-lg border border-gray-300 text-sm hover:bg-gray-50">+ pridať čas</button>
-        </div>
-
-        <div class="flex gap-2 pt-1">
-          <button id="savePlan" class="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">💾 Uložiť plán</button>
-          <button id="closePlan" class="flex-1 bg-gray-400 text-white py-2 rounded-lg hover:bg-gray-500">Zavrieť</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script type="module">
-    /* ---------- helpers ---------- */
-    const $  = (s)=>document.querySelector(s);
-    const $$ = (s)=>[...document.querySelectorAll(s)];
-    const dayShorts = ["Po","Ut","St","Št","Pi","So","Ne"];
-    const todayISO  = ()=> new Date().toISOString().slice(0,10);
-    const todayShort= ()=> dayShorts[(new Date().getDay()+6)%7]; // Po=0 … Ne=6
-    const readLS  = (k,d)=>{ try{ return JSON.parse(localStorage.getItem(k)) ?? d }catch{ return d } };
-    const writeLS = (k,v)=> localStorage.setItem(k, JSON.stringify(v));
-
-    // --- FIREBASE IMPORTY --- (KROK 2)
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    // --- FIREBASE KONFIGURÁCIA --- (KROK 2)
-    const firebaseConfig = {
-      apiKey: "AIzaSyAfs4NluHtDInHgmD22DHYDLt6ypl008DU",
-      authDomain: "citanie-sv.firebaseapp.com",
-      projectId: "citanie-sv",
-      storageBucket: "citanie-sv.appspot.com",
-      messagingSenderId: "16378682541",
-      appId: "1:16378682541:web:be64c5a5fff65055657a24"
-    };
-    // --- INITIALIZÁCIA --- (KROK 2)
-    const app = initializeApp(firebaseConfig); // Názov "mainApp" odstránený, preberá predvolený
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-    let userId;
-    const docRef = doc(db, "doplnkovy-cyklus", "data"); // Nová cesta z KROK 2
-
-
-    // 🔄 Načítanie doplnkov: LS má prioritu, server doplní chýbajúce (aby sa zmazané nevracali)
-    async function loadSupplements() {
-      const lsData = readLS('supplements', []);    // lokálne
-      let serverData = [];
-
-      try {
-        const res = await fetch('./doplnky.json?cacheBust=' + Date.now(), { cache: 'no-store' });
-        serverData = await res.json();
-      } catch (err) {
-        console.warn("⚠️ doplnky.json nedostupný, používam iba localStorage");
-        return lsData;
-      }
-
-      // Merge: základ LS, doplníme iba tie zo servera, ktoré v LS nie sú
-      const byName = (arr) => Object.fromEntries(arr.map(s => [s.name, s]));
-      const base = byName(lsData);
-      const merged = [...lsData];
-
-      serverData.forEach(item => {
-        if (!base[item.name]) merged.push(item);
-      });
-
-      // Ulož späť, ak sa niečo zmenilo
-      if (JSON.stringify(merged) !== JSON.stringify(lsData)) {
-        // writeLS('supplements', merged); // Už neukladáme tu, necháme to na firebase logike
-      }
-      return merged;
-    }
-
-    let supplements = []; // Načítame z LS/Firebase pri štarte
-    let history = readLS('history', {}); // Začíname s LS, Firebase prepíše
-
-    // Inicializácia (doplní chýbajúce polia)
-    function initializeSupplements(){
-      let changed = false;
-      supplements.forEach(s=>{
-        if(!s.startDate) { s.startDate = todayISO(); changed = true; }
-        if(!s.plan) { s.plan = { days:["Po","Ut","St","Št","Pi","So","Ne"], times:["08:30"] }; changed = true; }
-        if(!s.cycleConfig) { s.cycleConfig = { durationWeeks:0, pauseWeeks:0 }; changed = true; }
-      });
-
-      if(changed){
-        writeLS('supplements', supplements);
-        // Krok 4: Uloženie do Firebase
-        setDoc(docRef, { supplements, history }, { merge: true }).catch(console.warn);
-      }
-    }
-
-    /* ---------- Cycle Logic ---------- */
-    function getCycleStatus(supp){
-      const dow = new Date().getDay(); // 0=Ne … 6=So
-
-      // NMN - víkend pauza (sobota/nedeľa), aj keď je v pláne
-      if(supp.name==="NMN" && (dow===0 || dow===6)){
-        return {status:'PAUSE', message:'Víkendová pauza. Užívanie sa obnoví v pondelok.'};
-      }
-      if(!supp.cycleConfig || supp.cycleConfig.durationWeeks===0){
-        return {status:'ON', message:''};
-      }
-
-      const start = new Date(supp.startDate);
-      const now    = new Date();
-      const diffDays = Math.ceil(Math.abs(now-start)/(1000*60*60*24));
-
-      const daysInCycle = supp.cycleConfig.durationWeeks*7;
-      const daysInPause = supp.cycleConfig.pauseWeeks*7;
-      const total         = daysInCycle + daysInPause;
-
-      const into = diffDays % total;
-
-      if(into >= daysInCycle){
-        const daysLeftInPause = total - into;
-        return {status:'PAUSE', message:`POVINNÁ PAUZA (${supp.cycleConfig.pauseWeeks} týždňov). Zostáva: ${daysLeftInPause} dní.`};
-      }else{
-        const daysLeftInCycle = daysInCycle - into;
-        if(daysLeftInCycle <= 7){
-          return {status:'WARN', message:`⚠️ Cyklus končí o ${daysLeftInCycle} dní. Nasleduje ${supp.cycleConfig.pauseWeeks} týždňov pauza.`};
-        }
-        const weeksLeft = Math.ceil(daysLeftInCycle/7);
-        return {status:'ON', message:`Cyklus: ${supp.cycleConfig.durationWeeks} týždňov. Zostáva: ${weeksLeft} týždňov.`};
-      }
-    }
-
-    /* ---------- UI refs ---------- */
-    const listEl   = $('#supplementList');
-    const addEl    = $('#newSupplement');
-    const btnAdd   = $('#addSupplement');
-    const btnReset = $('#resetAll');
-    const btnNotif = $('#enableNotifs');
-    const dayStatus= $('#dayStatus');
-    const progressCircle = $('#progressCircle');
-    const progressLabel  = $('#progressLabel');
-    const todayChips = $('#todayChips');
-    const dayDisplay= $('#dayDisplay');
-    const planModal = $('#planModal');
-    const modalTitle= $('#modalTitle');
-    const dayChecks = $('#dayChecks');
-    const timeList  = $('#timeList');
-    const btnAddTime= $('#addTime');
-    const btnSavePlan=$('#savePlan');
-    const btnClosePlan=$('#closePlan');
-    const cycleConfigFields=$('#cycleConfigFields');
-    const cycleDuration   = $('#cycleDuration');
-    const cyclePause      = $('#cyclePause');
-    const cycleStatusMsg  = $('#cycleStatusMsg');
-    let editingIndex = -1;
-
-    /* ---------- Render list ---------- */
-    function renderSupplements(){
-      listEl.innerHTML = "";
-      supplements.forEach((supp,i)=>{
-        const cstat = getCycleStatus(supp);
-        const isPaused  = cstat.status==='PAUSE';
-        const isWarning = cstat.status==='WARN';
-
-        const isToday = supp.plan.days.includes(todayShort());
-        const timesToday = isToday ? [...supp.plan.times].sort() : [];
-
-        const row = document.createElement('div');
-        row.className = `supplement-card ${(isPaused?'pause':(isWarning?'warn':''))}`;
-
-        const left = document.createElement('div');
-        left.className = 'left';
-
-        const quantity = supp.doseQuantity || "1 ks";
-        const context  = supp.doseContext  || "ráno";
-        let dosageClass = 'gray';
-        if(context.includes('raňajkami') || context.includes('ráno')) dosageClass='orange';
-        else if(context.includes('obed') || context.includes('tréningom')) dosageClass='blue';
-        else if(context.includes('večer') || context.includes('spaním')) dosageClass='green';
-
-        left.innerHTML =
-          `<span class="name">${supp.name}</span>
-           <span class="dose-label ${dosageClass}">${quantity} ${context}</span>`;
-        row.appendChild(left);
-
-        const right = document.createElement('div');
-        right.className = isPaused ? "flex items-center gap-2" : "right";
-
-        if(isPaused){
-          const msg = document.createElement('div');
-          msg.className = "pause-message";
-          msg.innerHTML = `PAUZA<br>${cstat.message.replace('POVINNÁ PAUZA ','')}`;
-          right.appendChild(msg);
-          const planBtn = document.createElement('button');
-          planBtn.className = "icon"; planBtn.title="Plán užívania"; planBtn.textContent="🕓";
-          planBtn.onclick = ()=> openPlan(i);
-          right.appendChild(planBtn);
-        }else{
-          timesToday.forEach(t=>{
-            const checked = !!(history[todayISO()] && history[todayISO()][supp.name] && history[todayISO()][supp.name][t]);
-            const wrap = document.createElement('label');
-            wrap.className = "time-chip";
-            wrap.innerHTML = `<input type="checkbox" class="accent-blue-600 time-taken" data-name="${supp.name}" data-time="${t}" ${checked?'checked':''}> ${t}`;
-            right.appendChild(wrap);
-          });
-          if(isWarning){
-            const warn = document.createElement('span');
-            warn.className = "pause-message text-xs text-center w-full";
-            warn.textContent = cstat.message;
-            right.appendChild(warn);
-          }
-          const planBtn = document.createElement('button');
-          planBtn.className = "icon"; planBtn.title="Plán užívania"; planBtn.textContent="🕓";
-          planBtn.onclick = ()=> openPlan(i);
-          right.appendChild(planBtn);
-        }
-
-        const delBtn = document.createElement('button');
-        delBtn.className = "icon"; delBtn.title="Odstrániť"; delBtn.textContent="✖";
-        delBtn.onclick = ()=>{
-          supplements.splice(i,1);
-          writeLS('supplements', supplements);
-          // Krok 4.1: Uloženie do Firebase
-          setDoc(docRef, { supplements, history }, { merge: true }).catch(console.warn);
-          renderAll();
-        };
-        right.appendChild(delBtn);
-
-        row.appendChild(right);
-        listEl.appendChild(row);
-      });
-
-      $$('.time-taken').forEach(inp=>{
-        inp.addEventListener('change',(e)=>{
-          const n = e.target.dataset.name;
-          const t = e.target.dataset.time;
-          if(!history[todayISO()]) history[todayISO()] = {};
-          if(!history[todayISO()][n]) history[todayISO()][n] = {};
-          history[todayISO()][n][t] = e.target.checked;
-          writeLS('history', history);
-          // Krok 4.2: Uloženie do Firebase
-          setDoc(docRef, { supplements, history }, { merge: true }).catch(console.warn);
-          renderAll(false);
-        });
-      });
-    }
-
-    /* ---------- Planner modal ---------- */
-    function openPlan(index){
-      editingIndex = index;
-      const supp = supplements[index];
-      modalTitle.textContent = `🕓 ${supp.name} – Nastavenie cyklu (Dni & Časy)`;
-
-      if(supp.cycleConfig && supp.cycleConfig.durationWeeks>0){
-        cycleConfigFields.classList.remove('hidden');
-        cycleDuration.value = supp.cycleConfig.durationWeeks;
-        cyclePause.value    = supp.cycleConfig.pauseWeeks;
-        cycleStatusMsg.textContent = `Začiatok cyklu: ${supp.startDate}. Cyklus sa opakuje automaticky.`;
-      }else{
-        cycleConfigFields.classList.add('hidden');
-      }
-
-      dayChecks.innerHTML = "";
-      dayShorts.forEach(d=>{
-        const id = `d-${d}`;
-        const lab = document.createElement('label');
-        lab.className = "flex flex-col items-center gap-1 text-sm bg-gray-50 p-1 rounded-lg cursor-pointer hover:bg-gray-100";
-        lab.innerHTML = `<input type="checkbox" id="${id}" value="${d}" class="accent-blue-600" ${supp.plan.days.includes(d)?'checked':''}><span>${d}</span>`;
-        dayChecks.appendChild(lab);
-      });
-
-      timeList.innerHTML = "";
-      (supp.plan.times.length?supp.plan.times:["08:30"]).sort().forEach(addTimeRow);
-
-      planModal.classList.remove('hidden');
-    }
-    function addTimeRow(value="08:30"){
-      const w = document.createElement('div');
-      w.className = "flex items-center gap-2";
-      w.innerHTML = `<input type="time" value="${value}" class="time-input border rounded-lg px-3 py-1 flex-1">
-                       <button class="px-2 py-1 rounded-lg border border-gray-300 text-red-500 hover:bg-red-50 remove-time">✖</button>`;
-      timeList.appendChild(w);
-      w.querySelector('.remove-time').onclick = ()=> w.remove();
-    }
-    btnAddTime.onclick = ()=> addTimeRow();
-
-    btnSavePlan.onclick = ()=>{
-      if(editingIndex<0) return;
-      const daysSel  = [...dayChecks.querySelectorAll('input[type="checkbox"]:checked')].map(i=>i.value);
-      const timesSel = [...timeList.querySelectorAll('.time-input')].map(i=>i.value).filter(Boolean).sort();
-      supplements[editingIndex].plan = { days: daysSel, times: (timesSel.length?timesSel:["08:30"]) };
-      writeLS('supplements', supplements);
-      // Krok 4.3: Uloženie do Firebase
-      setDoc(docRef, { supplements, history }, { merge: true }).catch(console.warn);
-      planModal.classList.add('hidden');
-      renderAll(true);
-    };
-    btnClosePlan.onclick = ()=> planModal.classList.add('hidden');
-
-    /* ---------- Pridanie nového doplnku ---------- */
-    btnAdd.onclick = ()=>{
-      const name = addEl.value.trim();
-      const dose = document.getElementById('newDose').value.trim() || "1 ks";
-      const context = document.getElementById('newContext').value.trim() || "ráno";
-      if(!name) return;
-
-      const newIndex = supplements.push({
-        name,
-        doseQuantity: dose,
-        doseContext: context,
-        plan:{ days:["Po","Ut","St","Št","Pi","So","Ne"], times:["08:30"] },
-        startDate: todayISO(),
-        cycleConfig:{durationWeeks:0, pauseWeeks:0}
-      }) - 1;
-
-      addEl.value = "";
-      document.getElementById('newDose').value = "";
-      document.getElementById('newContext').value = "";
-
-      writeLS('supplements', supplements);
-      // Krok 4 (doplnené): Uloženie do Firebase
-      setDoc(docRef, { supplements, history }, { merge: true }).catch(console.warn);
-
-      openPlan(newIndex); // Otvoríme plánovač pre nový doplnok
-      renderAll(); // Zatiaľ nerendrujeme, až po uložení plánu
-    };
-
-    /* ---------- Reset (len denné dáta, doplnky a časy ostávajú) ---------- */
-    btnReset.onclick = ()=>{
-      if(btnReset.dataset.confirm==='true'){
-        localStorage.removeItem('history');
-        history = {}; // Vyčistiť v pamäti
-        // Vyčistiť aj na Firebase
-        setDoc(docRef, { supplements, history }, { merge: true }).catch(console.warn);
-        location.reload();
-      } else {
-        btnReset.textContent = "KLIKNI ZNOVA – resetuje LEN dnešné dáta!";
-        btnReset.dataset.confirm = 'true';
-        setTimeout(()=>{
-          btnReset.textContent = "🔁 Resetovať dáta";
-          btnReset.dataset.confirm = 'false';
-        }, 3000);
-      }
-    };
-
-    /* ---------- Progress + chips ---------- */
-    function renderProgress(){
-      todayChips.innerHTML = "";
-      const today = todayISO();
-      let total=0, done=0;
-      const doses = [];
-
-      supplements.forEach(s=>{
-        if(getCycleStatus(s).status==='PAUSE') return;
-        if(!s.plan.days.includes(todayShort())) return;
-        s.plan.times.forEach(t=>{
-          const was = !!(history[today] && history[today][s.name] && history[today][s.name][t]);
-          doses.push({name:s.name, time:t, was});
-        });
-      });
-
-      doses.sort((a,b)=> a.time===b.time ? a.name.localeCompare(b.name) : (a.time<b.time?-1:1));
-
-      doses.forEach(d=>{
-        total++; if(d.was) done++;
-        const chip = document.createElement('span');
-        chip.className = `pill ${d.was?'dosage':'time'} px-2 py-1 rounded-lg text-sm`;
-        chip.textContent = `${d.name} • ${d.time}${d.was?' ✓':''}`;
-        todayChips.appendChild(chip);
-      });
-
-      const pct = total ? Math.round(done/total*100) : 0;
-      const C = 2*Math.PI*54;
-      progressCircle.setAttribute('stroke-dasharray', C);
-      progressCircle.setAttribute('stroke-dashoffset', C*(1-pct/100));
-      progressLabel.textContent = `${pct}%`;
-
-      const weekday = new Date().toLocaleDateString('sk-SK',{weekday:'long'});
-      dayStatus.textContent = `📅 ${weekday} — splnené ${done}/${total} dávok`;
-    }
-
-    /* ---------- Deň v týždni ---------- */
-    function renderDayDisplay(){
-      dayDisplay.innerHTML = "";
-      const current = todayShort();
-      dayShorts.forEach(d=>{
-        const isToday = d===current;
-        const el = document.createElement('div');
-        el.className = `day-cell-compact ${isToday?'bg-indigo-600 text-white':'bg-gray-100 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700'} p-2 rounded-lg transition`;
-        el.textContent = d;
-        dayDisplay.appendChild(el);
-      });
-    }
-
-    /* ---------- Notifikácie ---------- */
-    btnNotif.onclick = async ()=>{
-      try{
-        const perm = await Notification.requestPermission();
-        if(perm!=='granted'){
-          dayStatus.textContent = "❌ Notifikácie: povoľ ich v nastaveniach prehliadača alebo systému.";
-          return;
-        }
-        scheduleTodayNotifications();
-        new Notification("🔔 Notifikácie povolené",{body:"Budem pripomínať tvoje časy."});
-      }catch(e){
-        dayStatus.textContent = "❌ Chyba pri notifikáciách.";
-      }
-    };
-    function scheduleTodayNotifications(){
-      if(typeof Notification==='undefined' || Notification.permission!=='granted') return;
-      const now = new Date();
-      supplements.forEach(s=>{
-        if(getCycleStatus(s).status==='PAUSE') return;
-        if(!s.plan.days.includes(todayShort())) return;
-        s.plan.times.forEach(t=>{
-          const [h,m] = t.split(':').map(Number);
-          const at = new Date(); at.setHours(h,m,0,0);
-          if(at<=now) return;
-          const delay = at - now;
-          setTimeout(()=>{
-            const was = history[todayISO()] && history[todayISO()][s.name] && history[todayISO()][s.name][t];
-            if(!was) new Notification("💊 Pripomienka",{body:`${s.name} • ${t}`});
-          }, delay);
-        });
-      });
-    }
-
-    /* ---------- Service worker ---------- */
-    function registerServiceWorker(){
-      if('serviceWorker' in navigator){
-        navigator.serviceWorker.register('./sw.js').catch(console.error);
-      }
-    }
-
-    /* ---------- Render all ---------- */
-    function renderAll(fromPlanSave=false){
-      initializeSupplements(); // Toto teraz zahŕňa aj sync, ak sa niečo zmenilo
-      renderSupplements();
-      renderDayDisplay();
-      renderProgress();
-      if(fromPlanSave) scheduleTodayNotifications();
-    }
-
-    /* ---------- 🔥 ŠTART APLIKÁCIE S FIREBASE ---------- */
-    window.addEventListener('load', async ()=>{
-      
-      // 🔥 Firebase anonymné prihlásenie (KROK 3)
-      try {
-        await signInAnonymously(auth);
-        userId = auth.currentUser?.uid || "anon";
-        console.log("Prihlásený ako:", userId);
-      } catch (e) {
-        console.warn("Nepodarilo sa prihlásiť anonymne:", e);
-      }
-      
-      // 🔄 Pokus o načítanie dát z Firebase (KROK 3)
-      try {
-        const snap = await getDoc(docRef);
-        if (snap.exists()) {
-          const data = snap.data();
-          supplements = data.supplements || [];
-          history = data.history || {};
-          writeLS('supplements', supplements);
-          writeLS('history', history);
-          console.log("☁️ Dáta načítané z Firebase");
-        } else {
-          // Fallback na lokálne dáta, ak na serveri nič nie je
-          supplements = await loadSupplements(); 
-          history = readLS('history', {});
-          console.log("🆕 Prvý štart — ukladám lokálne dáta na Firebase");
-          await setDoc(docRef, { supplements, history });
-        }
-
-        // 🛰️ Real-time listener – sleduje zmeny v pozadí (KROK 3)
-        onSnapshot(docRef, (snap) => {
-          if (snap.exists()) {
-            const d = snap.data();
-            if (JSON.stringify(d.supplements) !== JSON.stringify(supplements)) {
-              supplements = d.supplements; writeLS('supplements', supplements); renderAll();
-            }
-            if (JSON.stringify(d.history) !== JSON.stringify(history)) {
-              history = d.history; writeLS('history', history); renderAll();
-            }
-          }
-        });
-      } catch (e) {
-        console.warn("⚠️ Firebase sync error:", e);
-        // Fallback na pôvodnú logiku, ak Firebase zlyhá
-        supplements = await loadSupplements();
-        history = readLS('history', {});
-      }
-      
-      // Prvé renderovanie a zvyšok
-      renderAll();
-      
-      if(typeof Notification!=='undefined' && Notification.permission==='granted')
-        scheduleTodayNotifications();
-        
-      registerServiceWorker();
-    });
-  </script>
+  <!-- ⚡ Skript (Firebase + logika z tvojej verzie, bez zásahu do vzhľadu) -->
+  <script type="module" src="./main.js"></script>
 </body>
 </html>
