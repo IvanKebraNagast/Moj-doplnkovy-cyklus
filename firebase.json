@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "moj-doplnkovy-cyklus",
+    "site": "citanie-sv",
     "public": "./",
     "ignore": [
       "firebase.json",
