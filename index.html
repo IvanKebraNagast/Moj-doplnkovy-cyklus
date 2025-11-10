@@ -1,9 +1,47 @@
 <!DOCTYPE html>
 <html lang="sk">
 <head>
+  
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Môj doplnkový cyklus 💊</title>
+  
+
+    <!-- ⚡ PWA a Firebase konfigurácia -->
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="apple-touch-icon" href="./anti-aging.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Môj doplnkový cyklus">
+    <meta name="theme-color" content="#ffffff">
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-analytics.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAfs4NluHtDInHgmD22DHYDLt6ypl008DU",
+        authDomain: "citanie-sv.firebaseapp.com",
+        projectId: "citanie-sv",
+        storageBucket: "citanie-sv.firebasestorage.app",
+        messagingSenderId: "16378682541",
+        appId: "1:16378682541:web:1d68b51e2f56dc75657a24",
+        measurementId: "G-NNT3Z8FPYG"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+    </script>
+
+    <!-- ⚙️ Ostatné CSS, Tailwind atď -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+  </head>
+
+  <body>
+    <!-- tvoj obsah tu -->
+  </body>
+</html>
 
   <!-- Ikony / PWA -->
   <link rel="apple-touch-icon" href="./cyklus.png?v=6">
@@ -581,3 +619,4 @@
   </script>
 </body>
 </html>
+
